@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.navbar_button {
+  @apply text-center w-full flex-auto bg-black rounded-full border-amber-50 hover:bg-orange-900 py-2 px-2 rounded whitespace-nowrap;
+}
