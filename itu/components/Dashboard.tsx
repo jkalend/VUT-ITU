@@ -8,9 +8,11 @@ export default function Dashboard() {
                 ["draecena trifasciata", "/snake_plant.png", 2],
                 ["aloe vera", "/aloe_vera.jpg", -2]
             ].sort ((a) => a[2])
+
+    let issClicked = false;
+    let setClicked = (a) => {issClicked = a};
     return (
         <div className={"flex flex-col py-15 px-15 gap-10"}>
-            <div className={"flex flex-row justify-between hidden w-screen h-screen"}/>
             <div className={""}>
                 <h1 className={"text-orange-200 text-3xl font-semibold"}>
                     Overview
@@ -20,7 +22,7 @@ export default function Dashboard() {
                 </p>
             </div>
             <div className={"flex flex-wrap flex-row gap-5 p-5 flex-initial justify-center"}>
-                {data.map ((h) => 
+                {data.map ((h) =>
                     (<DItem name={h[0].toString()} image_path={h[1].toString()} days={h[2]}/>)
                 )}
             </div>
