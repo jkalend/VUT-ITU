@@ -1,26 +1,29 @@
 import Link from "next/link";
 import Image from 'next/image'
+import {Span} from "next/dist/server/lib/trace/tracer";
 
 //https://icon-library.com/images/sandwich-menu-icon/sandwich-menu-icon-24.jpg
 export default function Navbar( {isSidebarOpen, setSidebarOpen} : {isSidebarOpen: boolean, setSidebarOpen: any}) {
     return (
-        <nav className={"fixed top-0 w-full mb-16 bg-gradient-to-bl from-gray-800 text-white border-neutral-900 z-10"}>
-            <div className={"container mx-auto p-2.5"}>
-                <div className={'flex flex-row justify-between'}>
-                    <div className={'flex items-center justify-start'}>
-                        <div className={"left-[121px] top-[14px] absolute"}>
-                            <span className={"text-orange-200 text-5xl font-semibold"}>
-                                PLANT WATERING SCHEDULE
-                            </span>
-                        </div>
+        <nav className={"fixed top-0 w-full mb-16 bg-gradient-to-bl from-gray-800 backdrop-blur-xl text-white z-10 inline-flex justify-between"}>
+            <div className={'items-start justify-between flex-nowrap ml-5 gap-4'}>
+                <button id="toggleSidebar"
+                        className="text-center flex-auto px-8"
+                        onClick={() => {setSidebarOpen(!isSidebarOpen)}}>
+                    <Image className={"flex-auto"} src={"/planting.png"} alt={"Menu icon"} width={40} height={40}/>
+                </button>
 
-                        <button id="toggleSidebar"
-                                className="text-center w-full flex"
-                                onClick={() => {setSidebarOpen(!isSidebarOpen)}}>
-                            <Image className={"fill-current"} src={"/planting.png"} alt={"Menu icon"} width={40} height={40}/>
-                        </button>
-                    </div>
-                </div>
+                <span className={"text-orange-200 text-4xl font-semibold blur-[1px]"}>
+                    PLANT WATERING SCHEDULE
+                </span>
+            </div>
+            <div className={"flex end-0 mx-2 px-10 py-2 gap-2 items-center"}>
+                <button id="profile"
+                        className="text-center flex items-center gap-3"
+                        onClick={() => {setSidebarOpen(!isSidebarOpen)}}>
+                    <span className={"text-white text-2xl font-semibold font-['Inter']"}>FRANTA</span>
+                    <Image className={""} src={"/planting.png"} alt={"Profile"} width={40} height={40}/>
+                </button>
             </div>
         </nav>
     );

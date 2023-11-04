@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function DItem( {name, image_path, days} : {name: string, image_path: string, days: number}) {
 
     let style = (days >= 0) ? 'bg-green-200 hover:bg-green-300':'bg-red-200 hover:bg-red-300'
