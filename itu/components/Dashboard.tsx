@@ -9,8 +9,7 @@ export default function Dashboard() {
                 ["aloe vera", "/aloe_vera.jpg", -2]
             ].sort ((a) => a[2])
 
-    let issClicked = false;
-    let setClicked = (a) => {issClicked = a};
+
     return (
         <div className={"flex flex-col py-15 px-15 gap-10"}>
             <div className={""}>
