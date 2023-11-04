@@ -21,12 +21,14 @@ export default function Sidebar({children} : {children: any}) {
         <div className={'w-screen'}>
             <Navbar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen}/>
             <aside className={`${isSidebarOpen ? 'bg-gray-100' : 'h-0'}`}>
-                <div id="sidebar" className={sidebarClasses} style={sidebarStyle}>
+                <div id="sidebar" className={sidebarClasses} style={sidebarStyle} >
                     <ul className="mt-6">
-                        <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-                        <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-                        <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
+                        <li className="mb-4"><a href="#" className="text-lg">Preview</a></li>
+                        <li className="mb-4"><a href="#" className="text-lg">My Plants</a></li>
+                        <li className="mb-4"><a href="#" className="text-lg">Manage Plants</a></li>
+                        <li className="mb-4"><a href="#" className="text-lg">Profile Settings</a></li>
                         <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
+                        <li className="mb-4"><a href="#" className="text-lg" >About</a></li>
                     </ul>
                 </div>
             </aside>

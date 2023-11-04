@@ -6,38 +6,13 @@ export default function Home() {
     return (
       <div className={"flex min-h-screen flex-col items-center justify-between p-24"}>
           <Dashboard></Dashboard>
-          <p className={"text-2xl font-bold text-center"}>Please delete the item after adding it and not doing anything with it or you or anyone else really will get an error in your lovely terminal</p>
-          <Menu></Menu>
-          <ul className="mt-6">
-              <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
-          </ul>
-          <ul className="mt-6">
-              <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
-          </ul>
-          <ul className="mt-6">
-              <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
-          </ul>
-          <ul className="mt-6">
-              <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
-          </ul>
-          <ul className="mt-6">
-              <li className="mb-4"><a href="#" className="text-lg">Home</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">About</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Services</a></li>
-              <li className="mb-4"><a href="#" className="text-lg">Contact</a></li>
-          </ul>
+          <div className={"flex w-1/2 justify-between text-orange-200 text-lg font-semibold"}> 
+            <div><a href="#">Home</a></div>
+            <div><a href="#">Contact</a></div>
+            <div><a href="#">Services</a></div>
+            <div><a href="#">About</a></div>
+          </div>
+
       </div>
     )
 }

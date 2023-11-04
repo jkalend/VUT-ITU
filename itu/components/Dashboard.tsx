@@ -1,24 +1,28 @@
 import Image from "next/image";
+import DItem from "./DItem";
 
 export default function Dashboard() {
+    let data = [["aloe vera", "/aloe_vera.jpg", -2],
+                ["monstera adansonii", "/monstera-adansonii.jpg", -1],
+                ["chlorophytum comosum", "/spider_plant.jpg", 0],
+                ["draecena trifasciata", "/snake_plant.png", 2],
+                ["aloe vera", "/aloe_vera.jpg", -2]
+            ].sort ((a) => a[2])
     return (
-        <div className={"flex-col min-w-full py-5 px-5 bg-gray-600 border-gray-500 border w-full"}>
-            <h2 className={"min-w-full font-bold font-sans text-2xl"}>
-                Dashboard
-            </h2>
-            <div className={"flex h-80"}>
-                <div className={"flex flex-col w-1/2"}>
-                    Day 1
-                    <Image className={"fill-current"} src={"/plant-icon.svg"} alt={"Menu icon"} width={300} height={300}/>
-                </div>
-                <div className={"flex flex-col w-1/2"}>
-                    Day 2
-                    <Image className={"fill-current"} src={"/plant-icon.svg"} alt={"Menu icon"} width={300} height={300}/>
-                </div>
-                <div className={"flex flex-col w-1/2"}>
-                    Day 3
-                    <Image className={"fill-current"} src={"/plant-icon.svg"} alt={"Menu icon"} width={300} height={300}/>
-                </div>
+        <div className={"flex flex-col py-15 px-15 gap-10"}>
+            <div className={""}>
+                <h1 className={"text-orange-200 text-3xl font-semibold"}>
+                    Overview
+                </h1>
+                <p className={"text-orange-200 font-semibold"}>
+                    {data.filter((a) => a[2] < 0).length} plants in need of immediate watering
+                </p>
+            </div>
+            <div className={"flex flex-wrap flex-row gap-5 p-5 flex-initial justify-center"}>
+                {data.map ((h) => 
+                    (<DItem name={h[0]} image_path={h[1]} days={h[2]}>
+                    </DItem>)
+                )}
             </div>
 
 
