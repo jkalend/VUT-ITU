@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import {getPlantDetail, PlantData} from "../app/PlantData";
+import {getPlantDetail, PlantData} from "@/app/PlantData";
 import {useState, useEffect} from "react";
 
 export default function DetailsOverlay({isClicked, setClicked, name} : {isClicked: boolean, setClicked: any, name: string}) {
@@ -15,7 +15,7 @@ export default function DetailsOverlay({isClicked, setClicked, name} : {isClicke
     }
 
     useEffect(() => {
-        getData().then(r => console.log("fetched data"));
+        getData().then(r => {});
     });
 
     return (

@@ -34,4 +34,52 @@ body {
   @apply flex min-h-screen flex-col items-center justify-between mt-16;
 }
 
+.sliding-switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 30px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+  background-color: #ccc;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #111111;
+}
+
+input:checked + .slider:before {
+  transform: translateX(25px);
+  background-color: #cccccc;
+}
+
+.checked .slider:before {
+  transform: translateX(25px);
+}
+
 
