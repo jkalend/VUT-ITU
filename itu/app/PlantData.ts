@@ -1,4 +1,5 @@
 export type PlantData = {
+    id: number,
     name: string,
     nickname: string,
     description: string,
@@ -8,6 +9,7 @@ export type PlantData = {
     watering_amount: number
 }
 export let Plant: PlantData[] = [{
+    "id":0,
     "name": "aloe vera",
     "nickname": "",
     "description": "A good plant",
@@ -17,6 +19,7 @@ export let Plant: PlantData[] = [{
     "watering_amount": 50
 },
 {
+    "id":1,
     "name": "monstera adansonii",
     "nickname": "Monstera",
     "description": "A sad plant",
@@ -26,6 +29,7 @@ export let Plant: PlantData[] = [{
     "watering_amount": 40
 },
 {
+    "id":2,
     "name": "chlorophytum comosum",
     "nickname": "Spider Plant",
     "description": "A scary plant",
@@ -35,6 +39,7 @@ export let Plant: PlantData[] = [{
     "watering_amount": 30
 },
 {
+    "id":3,
     "name": "draecena trifasciata",
     "nickname": "Snake Plant",
     "description": "Ssssss plant",
