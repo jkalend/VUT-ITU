@@ -16,7 +16,7 @@ export default function Sidebar() {
     };
 
     const textStyle = {
-        transition: 'color 0.3s ease', // Adjust the transition duration as needed
+        transition: 'color 0.3s ease, font-size 0.3s ease, line-height 0.3s ease', // Adjust the transition duration as needed
     }
 
     return (
@@ -29,10 +29,10 @@ export default function Sidebar() {
                                 style={sidebarStyle}
                         >
                             <ul className="mt-16 fixed">
-                                <li className="mb-4 "><Link href="/" className="text-lg hover:text-amber-500" style={textStyle}>Overview</Link></li>
-                                <li className="mb-4"><Link href="/my-plants" className="text-lg hover:text-amber-500" style={textStyle}>My Plants</Link></li>
-                                <li className="mb-4"><Link href="#" className="text-lg hover:text-amber-500" style={textStyle}>Add a plant</Link></li>
-                                <li className="mb-4"><button className="text-lg hover:text-amber-500" style={textStyle} onClick={() => setClicked(!isClicked)}>Settings</button></li>
+                                <li className="mb-4 "><Link href="/" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Overview</Link></li>
+                                <li className="mb-4"><Link href="/my-plants" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>My Plants</Link></li>
+                                <li className="mb-4"><Link href="#" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Add a plant</Link></li>
+                                <li className="mb-4"><button className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle} onClick={() => setClicked(!isClicked)}>Settings</button></li>
                             </ul>
                         </nav>
                     </div>

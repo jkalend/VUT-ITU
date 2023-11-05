@@ -27,7 +27,6 @@ export default function DetailsOverlay({isClicked, setClicked, name} : {isClicke
                 <span className={"text-bold"}>{"Days left:\t" + data?.days}</span>
                 <span className={"text-bold"}>{"Water every:\t" + data?.watering_frequency}</span>
                 <span className={"text-bold"}>{"Water amount:\t" + data?.watering_amount}</span>
-
             </div>
         </div>
     );

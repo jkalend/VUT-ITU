@@ -1,15 +1,15 @@
 "use client"
-import Image from "next/image";
 import DItem from "./DItem";
 import { useState, useEffect } from "react";
 import { getSettings } from "@/app/Settings";
 import { PlantData } from "@/app/PlantData";
 
 export default function Dashboard({isClicked, setClicked, setName, data} : {isClicked: boolean, setClicked: any, setName: any, data: any}) {
+    const [filteredData, setFilteredData] = useState ([] as PlantData []);
     const [whichPlant, setWhichPlant] = useState (-1);
     useEffect (() => {
         if (whichPlant != -1) {
-            data.splice (data.indexOf (whichPlant), 1);
+            filteredData.splice (filteredData.indexOf (whichPlant), 1);
             setWhichPlant (-1)
         }
     });
@@ -19,7 +19,6 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
         const filteredData = data.filter((h: PlantData) => h.days <= stg.days_remaining);
         setFilteredData(filteredData);
     }, [stg]);
-    const [filteredData, setFilteredData] = useState ([] as PlantData []);
 
     const [a, b] = useState (false);
     useEffect(() => {
