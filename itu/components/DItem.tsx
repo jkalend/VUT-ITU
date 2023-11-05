@@ -1,13 +1,15 @@
-"use client"
-import Link from "next/link";
 
-export default function DItem( {name, image_path, days} : {name: string, image_path: string, days: number}) {
+export default function DItem( {name, image_path, days, isClicked, setClicked, setName} : {name: string, image_path: string, days: number, isClicked: boolean, setClicked: any, setName: any}) {
 
     let style = (days >= 0) ? 'bg-green-200 hover:bg-green-300':'bg-red-200 hover:bg-red-300'
   return (
     <div className="w-[363px] h-[322px] relative">
         <div className="w-[363px] h-[322px] left-0 top-0 absolute bg-orange-200 rounded-lg"/>
-        <button onClick={() => {}}>
+        <button onClick={() => {
+            setClicked(!isClicked);
+            setName({name});
+        }
+        }>
             <img className="w-[345.29px] h-[215px] left-[8.85px] top-[9px] absolute rounded-lg" src={image_path}/>
         </button>
         <div className="w-[164.90px] left-[99.60px] top-[287px] absolute text-stone-400 text-center text-sm font-semibold]">
