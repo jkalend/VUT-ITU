@@ -7,7 +7,7 @@ import SettingsOverlay from "@components/SettingsOverlay";
 export default function Sidebar() {
 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    let [isClicked, setClicked] = useState(true);
+    const [isClicked, setClicked] = useState(true);
 
     const sidebarStyle = {
         width: isSidebarOpen ? '16rem' : '0px', // You can adjust the width value as needed
@@ -42,10 +42,3 @@ export default function Sidebar() {
         </div>
     );
 }
-
-// <main
-//     className={`flex min-h-screen px-10 mx-5 flex-col items-center justify-between ${isSidebarOpen ? 'ml-64' : ''}`}
-//     style={mainStyle}
-// >
-//     {children}
-// </main>

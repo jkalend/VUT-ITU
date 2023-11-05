@@ -1,7 +1,7 @@
 "use client"
 import DItem from "./DItem";
 import { useState, useEffect } from "react";
-import { getSettings } from "@/app/Settings";
+import { getSettings, Settings } from "@/app/Settings";
 import { PlantData } from "@/app/PlantData";
 
 export default function Dashboard({isClicked, setClicked, setName, data} : {isClicked: boolean, setClicked: any, setName: any, data: any}) {
@@ -9,18 +9,19 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
     const [whichPlant, setWhichPlant] = useState (-1);
     useEffect (() => {
         if (whichPlant != -1) {
+            data[data.indexOf (whichPlant)].days = Number(stg.days_remaining) + 1;
             filteredData.splice (filteredData.indexOf (whichPlant), 1);
             setWhichPlant (-1)
         }
     });
 
-    const [stg, setStg] = useState ({} as any);
+    const [stg, setStg] = useState ({} as Settings);
     useEffect(() => {
-        const filteredData = data.filter((h: PlantData) => h.days <= stg.days_remaining);
+        const filteredData = data.filter((h: PlantData) => h.days <= Number(stg.days_remaining));
         setFilteredData(filteredData);
     }, [stg]);
 
-    const [a, b] = useState (false);
+    const [refresh, setRefresh] = useState (false);
     useEffect(() => {
         const timeout = setTimeout(() => {
             const getStg = async () => {
@@ -29,14 +30,14 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
                     setStg(data);
                     console.log(data);
                 }
-                b(!a);
+                setRefresh(!refresh);
             }
             getStg().then(r => {});
         }, 1000);
         return () => {
             clearTimeout(timeout);
         };
-    }, [a]);
+    }, [refresh]);
 
     return (
         <div className={"flex flex-col py-15 px-15 gap-10"}>
