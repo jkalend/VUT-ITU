@@ -9,7 +9,7 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
     const [whichPlant, setWhichPlant] = useState (-1);
     useEffect (() => {
         if (whichPlant != -1) {
-            data[data.indexOf (whichPlant)].days = Number(stg.days_remaining) + 1;
+            data[data.indexOf (whichPlant)].days = Number(data[data.indexOf (whichPlant)].watering_frequency);
             filteredData.splice (filteredData.indexOf (whichPlant), 1);
             setWhichPlant (-1)
         }
