@@ -23,13 +23,12 @@ export default function DItem( {plant, isClicked, setClicked, setName, setWhichP
             <div className="text-black text-xl font-semibold">{plant.name.toString()}</div>
         </div>
 
-        <div className={"w-[326px] h-[47px] px-[25px] py-[9px] left-[17px] top-[232px] absolute border border-black justify-center items-center gap-2.5 inline-flex text-white font-bold rounded-lg " + style}>
-            <div className="text-slate-700 text-2xl font-semibold">
-                <button onClick={() => {
+        <div className={"w-[326px] h-[47px] px-[25px] py-[9px] left-[17px] top-[232px] absolute border border-black justify-center items-center gap-2.5 inline-flex text-white font-bold rounded-lg " + style} 
+                onClick={() => {
                     setWhichPlant(plant);
-                    }}>
+        }}>
+            <div className="text-slate-700 text-2xl font-semibold">
                     Tap to Water
-                </button>
             </div>
         </div>
     </div>

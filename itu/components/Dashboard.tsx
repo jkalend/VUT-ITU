@@ -2,6 +2,7 @@
 import Image from "next/image";
 import DItem from "./DItem";
 import { useState, useEffect } from "react";
+import { PlantData } from "@/app/PlantData";
 
 export default function Dashboard({isClicked, setClicked, setName, data} : {isClicked: boolean, setClicked: any, setName: any, data: any}) {
     const [whichPlant, setWhichPlant] = useState (-1);
@@ -19,11 +20,11 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
                     Overview
                 </h1>
                 <p className={"text-orange-200 font-semibold"}>
-                    {data.filter((a) => a.days < 0).length} plants in need of immediate watering
+                    {data.filter((a: PlantData) => a.days < 0).length} plants in need of immediate watering
                 </p>
             </div>
             <div className={"flex flex-wrap flex-row gap-5 p-5 flex-initial justify-center"}>
-                {data.map ((h) =>
+                {data.map ((h: PlantData) =>
                     (<DItem key={h.id} plant={h} isClicked={isClicked} setClicked={setClicked} setName={setName} setWhichPlant={setWhichPlant}/>)
                 )}
             </div>

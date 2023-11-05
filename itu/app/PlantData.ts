@@ -49,6 +49,10 @@ export let Plant: PlantData[] = [{
     "watering_amount": 60
 },]
 
-export async function getPlantDetail({name} : {name: string}) {
+export async function getPlantData () {
+    return Plant;
+}
+
+export async function getPlantDetail(name: string) {
     return Plant.find(plant => plant.name === name)
 }
