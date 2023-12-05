@@ -3,12 +3,14 @@ import { useState } from "react";
 import Navbar from "@components/Navbar";
 import Link from "next/link";
 import SettingsOverlay from "@components/SettingsOverlay";
+import CreatePost from "@components/CreatePost";
+import { useSession } from "next-auth/react";
 
 export default function Sidebar() {
-
+    const { data: session } = useSession();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [isClicked, setClicked] = useState(true);
-
+    const [create, setCreate] = useState (true);
     const sidebarStyle = {
         width: isSidebarOpen ? '16rem' : '0px', // You can adjust the width value as needed
         transition: 'width 0.3s, transform 0.3s', // Adjust the transition duration as needed
@@ -30,13 +32,16 @@ export default function Sidebar() {
                         >
                             <ul className="mt-16 fixed">
                                 <li className="mb-4 "><Link href="/" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Overview</Link></li>
-                                <li className="mb-4"><Link href="/my-plants" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>My Plants</Link></li>
-                                <li className="mb-4"><Link href="#" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Add a plant</Link></li>
+                                {(session) ? <li className="mb-4"><Link href="/my-plants" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>My Plants</Link></li>:""}
+                                {(session) ?<li className="mb-4"><Link href="#" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Add a plant</Link></li>:""}
                                 <li className="mb-4"><button className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle} onClick={() => setClicked(!isClicked)}>Settings</button></li>
+                                {(session)? <li className="mb-4"><button className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle} onClick={() => setCreate(!create)}>Create Post</button></li>:""}
+                                <li className="mb-4"><Link href="/social" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Community</Link></li>
                             </ul>
                         </nav>
                     </div>
                     <SettingsOverlay isClicked={isClicked} setClicked={setClicked}/>
+                    <CreatePost isClicked={create} setClicked={setCreate}/>
                 </div>
             </div>
         </div>

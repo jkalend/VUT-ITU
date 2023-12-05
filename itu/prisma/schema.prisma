@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  email    String   @id @unique
+  username String   @unique
+
+  posts    Post[]   @relation ("UserPost")
+  plants   Plant[]  @relation ("UserPlant")
+  likes    Post[]   @relation ("LikedPosts")
+  comments  Comment[] @relation ("UserComment")
+}
+
+model Comment {
+  commentId     Int   @id @default(autoincrement())
+  dateCreated   DateTime  @default(now())
+  text          String
+
+  email         String
+  author        User      @relation ("UserComment", fields: [email], references: [email])
+  postId        Int
+  on            Post      @relation ("PostComment", fields: [postId], references: [postId])
+
+}
+
+model Post {
+  postId        Int      @id @default(autoincrement())
+  dateCreated   DateTime @default(now())
+  image         String
+  description   String
+
+  email         String
+  creator       User     @relation("UserPost", fields: [email], references: [email])
+  likedBy       User []  @relation ("LikedPosts")
+  comments      Comment [] @relation ("PostComment")
+}
+
+
+model LikedPosts {
+  A Int
+  B String
+
+  @@unique([A, B], map: "_LikedPosts_AB_unique")
+  @@index([B], map: "_LikedPosts_B_index")
+  @@map("_LikedPosts")
+}
+
+model Species {
+  speciesId       Int     @id @default(autoincrement()) 
+  name            String
+  wateringPeriod  Int
+  wateringAmount  Int
+  speciesImage    Bytes
+
+  plants          Plant []  @relation ("PlantSpecies")          
+}
+
+model Plant {
+  plantId     Int     @id @default(autoincrement())
+  nickname    String? 
+  customImage String?
+  description String?
+
+  speciesId   Int
+  species     Species  @relation ("PlantSpecies", fields: [speciesId], references: [speciesId])
+  email       String
+  user        User          @relation ("UserPlant",fields: [email], references: [email])
+  waterings   Watering []   @relation("PlantWatering")
+}
+
+
+
+model Watering {
+  wateringId      Int       @id @default (autoincrement())
+  dateWatered     DateTime  @default(now())
+  amount          Int   
+
+  plantId         Int
+  plant           Plant      @relation ("PlantWatering", fields: [plantId], references: [plantId])
+}
