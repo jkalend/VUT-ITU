@@ -37,6 +37,7 @@ export default function Sidebar() {
                                 <li className="mb-4"><button className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle} onClick={() => setClicked(!isClicked)}>Settings</button></li>
                                 {(session)? <li className="mb-4"><button className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle} onClick={() => setCreate(!create)}>Create Post</button></li>:""}
                                 <li className="mb-4"><Link href="/social" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Community</Link></li>
+                                <li className="mb-4"><Link href="/chat" className="text-lg hover:text-amber-500 hover:text-2xl" style={textStyle}>Chat</Link></li>
                             </ul>
                         </nav>
                     </div>
