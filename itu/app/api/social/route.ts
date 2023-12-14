@@ -36,8 +36,10 @@ export const POST = async (request: NextRequest) => {
             }
         })
         saveFile (post.image, image)
+        post.image = image
         return new Response(JSON.stringify(post), { status: 200 })
     } catch (error) {
+        console.log(error);
         return new Response("Failed to create post " + error, { status: 500 })
     }
 } 
@@ -69,7 +71,6 @@ export const DELETE = async (request: NextRequest) => {
 export const GET = async (request: NextRequest) => {
     try {
         const posts = await prisma.post.findMany({
-            take: 5,
             include: {
                 likedBy: true,
                 creator: true,

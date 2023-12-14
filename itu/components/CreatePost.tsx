@@ -1,10 +1,9 @@
 "use client"
 import Image from "next/image";
-import {getPlantDetail, PlantData} from "@/app/PlantData";
 import {useState, useEffect} from "react";
 import { useSession } from "next-auth/react";
 
-export default function createPost({isClicked, setClicked, name} : {isClicked: boolean, setClicked: any}) {
+export default function createPost({isClicked, setClicked,setNewPostFlag} : {isClicked: boolean, setClicked: any, setNewPostFlag: any}) {
     const { data: session } = useSession();
     const [description, setDescription] = useState("")
     const [image, setImage] = useState(null);
@@ -21,10 +20,16 @@ export default function createPost({isClicked, setClicked, name} : {isClicked: b
   
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        
         event.preventDefault ()
         const fileReader = new FileReader();
-
+        const desc = description
         fileReader.readAsDataURL(image);
+
+        setDescription("")
+        setImage(null)
+        setCreateObjectURL(null)
+        setClicked(true)
         fileReader.onload = async () => {
             const base64 = fileReader.result
             const res = await fetch("/api/social", {
@@ -35,9 +40,11 @@ export default function createPost({isClicked, setClicked, name} : {isClicked: b
             if (!res.ok) {
                 console.log ("Error")
             }
+            else {
+                const p = await res.json()
+                setNewPostFlag((flag)=> !flag)
+            }
         };
-
-        
     }
 
     const handleDescription = (event: any) => {
@@ -47,7 +54,7 @@ export default function createPost({isClicked, setClicked, name} : {isClicked: b
     return (
         <div className={`${isClicked ? "collapse backdrop-blur-0" : "backdrop-blur-[5px]"} flex fixed z-30 items-center justify-center snap-center w-screen h-screen left-0 transition-all duration-200`}>
             <button className={`w-screen h-screen`} onClick={() => setClicked(!isClicked)}/>
-            <div className={`${isClicked ? "hidden" : ""} m-16 p-16 flex fixed hover:cursor-auto bg-[#736349] rounded-2xl justify-center items-start flex-col`}>
+            <div className={`${isClicked ? "hidden" : ""} m-10 p-10 flex fixed hover:cursor-auto bg-[#736349] rounded-2xl justify-center items-start flex-col max-h-[90%]  `}>
                 <div className="text-4xl text-bold">
                     <div>
                         Create New Post
