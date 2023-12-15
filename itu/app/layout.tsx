@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@components/Sidebar'
 import Provider from "@components/Provider";
+import ChatAi from "@components/ChatAi";
 
 export const metadata: Metadata = {
   title: 'Water Me',
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Sidebar/>
             <div className={"flex h-full relative p-2 mt-16 overflow-y-auto overflow-x-hidden w-full"}>
               {children}
+              <ChatAi/>
             </div>
           </div>
         </Provider> 

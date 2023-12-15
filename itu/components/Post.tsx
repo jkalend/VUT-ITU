@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { button } from "@nextui-org/react";
 
-export default function Post( {post} ) {
+export default function Post( {post, setPosts} ) {
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false)
   const [newDescr, setNewDescr] = useState (post.description)
@@ -49,6 +49,7 @@ export default function Post( {post} ) {
     if (!res.ok) {
         console.log ("Error")
     }
+    setPosts ((posts) =>  {return posts.filter((p) => p.postId != post.postId)})
   }
 
   const handleDescription = (event: any) => {
