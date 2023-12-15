@@ -1,8 +1,10 @@
 "use client";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function removeChatter({isClicked, setClicked, group, user} : {isClicked: boolean, setClicked: any, group: any, user: any}) {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
@@ -16,6 +18,9 @@ export default function removeChatter({isClicked, setClicked, group, user} : {is
         setClicked(!isClicked);
         if (!res.ok) {
             console.log ("Error")
+        }
+        if(user.email === session?.user?.email){
+            router.push("/chat");
         }
     }
     

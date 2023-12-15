@@ -9,14 +9,14 @@ datasource db {
 }
 
 model User {
-  email    String    @id @unique
-  username String    @unique
-  posts    Post[]    @relation("UserPost")
-  plants   Plant[]   @relation("UserPlant")
-  likes    Post[]    @relation("LikedPosts")
-  comments Comment[] @relation("UserComment")
+  email    String      @id @unique
+  username String      @unique
+  posts    Post[]      @relation("UserPost")
+  plants   Plant[]     @relation("UserPlant")
+  likes    Post[]      @relation("LikedPosts")
+  comments Comment[]   @relation("UserComment")
   groups   ChatGroup[] @relation("UserChatGroup")
-  messages Message[] @relation("UserMessage")
+  messages Message[]   @relation("UserMessage")
 }
 
 model Comment {
@@ -78,21 +78,30 @@ model Watering {
   plant       Plant    @relation("PlantWatering", fields: [plantId], references: [plantId])
 }
 
-model ChatGroup{
-    groupId Int @id @default(autoincrement())
-    name String
-    ownerEmail String
-    creator String
-    users User[] @relation("UserChatGroup")
-    messages Message[] @relation("MessageChatGroup")
+model ChatGroup {
+  groupId    Int       @id @default(autoincrement())
+  name       String
+  ownerEmail String
+  creator    String
+  users      User[]    @relation("UserChatGroup")
+  messages   Message[] @relation("MessageChatGroup")
 }
 
-model Message{
-    messageId Int @id @default(autoincrement())
-    text String
-    dateCreated DateTime @default(now())
-    email String
-    groupId Int
-    author User @relation("UserMessage", fields: [email], references: [email])
-    group ChatGroup @relation("MessageChatGroup", fields: [groupId], references: [groupId])
+model Message {
+  messageId   Int       @id @default(autoincrement())
+  text        String    @db.VarChar(505)
+  dateCreated DateTime  @default(now())
+  email       String
+  groupId     Int
+  author      User      @relation("UserMessage", fields: [email], references: [email])
+  group       ChatGroup @relation("MessageChatGroup", fields: [groupId], references: [groupId])
+}
+
+model UserChatGroup {
+  A Int
+  B String
+
+  @@unique([A, B], map: "_UserChatGroup_AB_unique")
+  @@index([B], map: "_UserChatGroup_B_index")
+  @@map("_UserChatGroup")
 }
