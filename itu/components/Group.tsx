@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-
 export default function Group({ group } : {group: any}) {
     return (
         <a href={`/chat/${group.groupId}`}>

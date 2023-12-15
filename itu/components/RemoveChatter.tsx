@@ -2,28 +2,30 @@
 import {useState, useEffect} from "react";
 import { useSession } from "next-auth/react";
 
-export default function addChatter({isClicked, setClicked, group} : {isClicked: boolean, setClicked: any, group: any}) {
+export default function removeChatter({isClicked, setClicked} : {isClicked: boolean, setClicked: any}) {
     const { data: session } = useSession();
-    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+  
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
-        const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}/users`, {
+        const res = await fetch(`/api/chat/${session?.user?.email}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                "email": email,
+                "name": name, 
+                "username": session.user?.name
             }),
         });
         setClicked(!isClicked);
-        setEmail("");
+        setName("");
         if (!res.ok) {
             console.log ("Error")
         }
     }
-    
-    const handleEmail = (event: any) => {
-        setEmail(event.target.value);
+
+    const handleName = (event: any) => {
+        setName(event.target.value);
     }
     
     return (
@@ -32,7 +34,7 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
             <div className={`${isClicked ? "hidden" : ""} p-10 top-32 flex fixed hover:cursor-auto bg-[#736349] rounded-2xl justify-center items-start flex-col`}>
                 <div className="text-4xl text-bold">
                     <div>
-                        Add group member
+                        Create Group
                     </div>
                 </div>
                 <form onSubmit={onSubmit} className='mt-5 w-full max-w-2xl flex flex-col gap-7 glassmorphism'>
@@ -40,14 +42,15 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
                         type="text"
                         name="name"
                         id="name"
-                        value={email}
-                        onChange={handleEmail}
-                        placeholder='Enter user email'
+                        value={name}
+                        onChange={handleName}
+                        placeholder='Enter Group Name'
                         required
+                        maxLength={50}
                         className='text-black block p-2.5 w-full rounded-lg'
                     />
                     <button type='submit' className='text-gray-500 bg-amber-300 hover:bg-amber-400 outline-1 outline-red-500 hover:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
-                        Add member
+                        Create Group
                     </button>
                 </form>
             </div>

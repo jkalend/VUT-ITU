@@ -1,4 +1,3 @@
-// POST - create new post
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
 
@@ -11,7 +10,12 @@ export const POST = async (request: NextRequest, { params }) => {
             data: {
                 name: name,
                 ownerEmail: params.email,
-                creator: username
+                creator: username,
+                users: {
+                    connect: {
+                        email: params.email
+                    }
+                }
             }
         })
         return new Response(JSON.stringify(group), { status: 200 })
@@ -25,7 +29,11 @@ export const GET = async (request: NextRequest, { params }) => {
     try {
         const groups = await prisma.chatGroup.findMany({
             where: {
-                ownerEmail: params.email
+                users: {
+                    some: {
+                        email: params.email
+                    }
+                }
             }
         })
         return new Response(JSON.stringify(groups), { status: 200 })

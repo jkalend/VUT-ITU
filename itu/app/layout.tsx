@@ -27,7 +27,7 @@ export default function RootLayout({
               style={mainStyle}
           >
             <Sidebar/>
-            <div className={"flex h-full relative p-2 mt-16 overflow-y-auto overflow-x-hidden"}>
+            <div className={"flex h-full relative p-2 mt-16 overflow-y-auto overflow-x-hidden w-full"}>
               {children}
             </div>
           </div>

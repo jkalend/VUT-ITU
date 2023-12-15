@@ -1,5 +1,3 @@
-
-// POST - create new post
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
 
@@ -46,7 +44,6 @@ export const GET = async (request: NextRequest, { params }) => {
 // DELETE - delete group
 export const DELETE = async (request: NextRequest, { params }) => {
     try {
-
         const deletedGroup = await prisma.chatGroup.delete({
             where:{
                 groupId: Number(params.groupId)
