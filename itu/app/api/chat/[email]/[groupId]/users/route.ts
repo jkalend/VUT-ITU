@@ -98,3 +98,21 @@ export const DELETE = async (request: NextRequest, { params }) => {
         return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 } 
+
+// PUT - update owner
+export const PUT = async (request: NextRequest, { params }) => {
+    try {
+        const { email } = await request.json();
+        const updatedGroup = await prisma.chatGroup.update({
+            where: {
+                groupId: Number(params.groupId)
+            },
+            data: {
+                ownerEmail: email
+            }
+        });
+        return new NextResponse(JSON.stringify(updatedGroup), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    } catch (error: any) {
+        return new NextResponse(JSON.stringify({ error: "Failed to update group: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
+}

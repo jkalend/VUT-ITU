@@ -8,7 +8,7 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
-        const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}`, {
+        const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}/users`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

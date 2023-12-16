@@ -70,7 +70,8 @@ export default function Group({ message, messageSent, setMessageSent } : {messag
         <div className="flex p-2 flex-col bg-gray-600 hover:bg-gray-700/50 ">
             <div className="flex flex-row break-words items-center relative">
                 <h2 className="font-bold mr-3 text-amber-300 break-all flex-wrap">{message.author.username}</h2>
-                <p className="text-xs text-gray-400 break-all flex-wrap">{date}</p>
+                <p className="text-xs mr-3 text-gray-400 break-all flex-wrap">{date}</p>
+                <p className="text-xs text-gray-400 break-all flex-wrap">{message.author.email}</p>
                 <div className="flex flex-row p-2 h-16 absolute right-0">
                     {message.author.email === session?.user?.email ?
                     (

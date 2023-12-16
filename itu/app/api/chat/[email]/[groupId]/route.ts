@@ -59,16 +59,16 @@ export const DELETE = async (request: NextRequest, { params }) => {
     }
 } 
 
-// PUT - update owner
+// PUT - update group name
 export const PUT = async (request: NextRequest, { params }) => {
     try {
-        const { email } = await request.json();
+        const { name } = await request.json();
         const updatedGroup = await prisma.chatGroup.update({
             where: {
                 groupId: Number(params.groupId)
             },
             data: {
-                ownerEmail: email
+                name: name
             }
         });
         return new NextResponse(JSON.stringify(updatedGroup), { status: 200, headers: { 'Content-Type': 'application/json' } });

@@ -56,7 +56,7 @@ export default function Navbar({
                             onClick={() => {
                                 signOut();
                             }}
-                            className="text-white bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
+                            className="text-black bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
                         >
                             Sign out
                         </button>

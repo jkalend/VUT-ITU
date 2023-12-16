@@ -9,6 +9,7 @@ import ConfirmDelete from '@components/ConfirmDelete'
 import Chatter from '@/components/Chatter';
 import TransferOwner from '@/components/TransferOwner';
 import Message from '@/components/Message';
+import Image from 'next/image';
 
 
 const groupChat = () => {
@@ -26,6 +27,8 @@ const groupChat = () => {
     const [message, setMessage] = useState ("");
     const [messages, setMessages] = useState ([]);
     const [messageSent, setMessageSent] = useState (false);
+    const [edit, setEdit] = useState (false);
+    const [groupName, setGroupName] = useState ("");
 
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
@@ -45,6 +48,7 @@ const groupChat = () => {
             const data = await response.json();
             console.log(data)
             setGroup(data);
+            setGroupName(data?.name);
         }
         catch (err) {
             console.log("Error" + err)
@@ -55,7 +59,7 @@ const groupChat = () => {
         if (status === "authenticated"){
             fetchGroup();
         }
-    }, [status]);
+    }, [status, edit]);
 
     const fetchChatters = async () => {
         try {
@@ -71,21 +75,6 @@ const groupChat = () => {
             console.log("Error" + err)
         }
     };
-
-    const fetchMessages = async () => {
-        try {
-            const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`,{
-                    method: "GET",
-                    headers: {"Content-Type": "application/json"},
-                });
-            const data = await response.json();
-            console.log(data)
-            setMessages(data);
-        }
-        catch (err) {
-            console.log("Error" + err)
-        }
-    }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
@@ -103,10 +92,17 @@ const groupChat = () => {
         }
     }
 
-    const handleKeyDown = async (event: any) => {
+    const handleKeyDownMessage = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
           await onSubmit(event);
+        }
+    };
+
+    const handleKeyDownGroup = async (event: any) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          await onEdit(event);
         }
     };
 
@@ -130,7 +126,30 @@ const groupChat = () => {
     }, [addClicked, removeClicked, transfer]);
 
     useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`,{
+                        method: "GET",
+                        headers: {"Content-Type": "application/json"},
+                    });
+                const data = await response.json();
+                console.log(data)
+                setMessages(data);
+            }
+            catch (err) {
+                console.log("Error" + err)
+            }
+        }
+
         fetchMessages();
+
+        const interval = setInterval(() => {
+            fetchMessages();
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+          };
     }, [messageSent]);
 
     const toggleAdd = () => {
@@ -145,25 +164,76 @@ const groupChat = () => {
         setMessage(event.target.value);
     }
 
+    const handleGroupName = (event: any) => {
+        setGroupName(event.target.value);
+    }
+
+    const onEdit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault ();
+        if(groupName !== group?.name) {
+            const res = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    "name": groupName,
+                }),
+            });
+        }
+        setEdit(!edit);
+    }
+
     return (
         <div className={"main-div w-screen flex flex-row"}>          
             <div className="flex flex-row flex-wrap w-full m-5">
-                <div className={"flex flex-col max-w-[70%]"}>
+                <div className={"flex flex-col w-[70%]"}>
                     <div className={"flex flex-row pr-20 pl-10"}>
-                        <h1 className={"flex-grow pl-10 m-5 items-center text-orange-200 max-w-md text-3xl font-semibold break-all"}>
-                            {group?.name}
-                        </h1>
-                        {group?.ownerEmail === session?.user?.email ?
+                        {edit ?
                         (
-                            <>
-                            <button className={"m-5 items-center bg-green-300 text-gray-700 rounded-md px-5 py-2 font-semibold hover:bg-green-400 hover:cursor-pointer"}
-                                    onClick={toggleAdd}>
-                                    Add User
-                            </button><button className={"m-5 items-center bg-red-800 text-black rounded-md px-5 py-2 font-semibold hover:bg-red-900 hover:cursor-pointer"}
-                                onClick={toggleDelete}>
-                                    Delete Group
-                            </button>
-                            </>
+                            <div className="flex-grow pl-10 m-5 mr-1 items-center w-full max-w-md break-words h-auto">
+                                <form onSubmit={onEdit} className='flex max-w-md flex-row glassmorphism'>
+                                    <textarea
+                                        name="groupName"
+                                        id="groupName"
+                                        value={groupName}
+                                        onChange={handleGroupName}
+                                        onKeyDown={handleKeyDownGroup}
+                                        required
+                                        maxLength={45}
+                                        className='p-2 flex-grow h-auto text-black border border-black bg-gray-200 resize-none overflow-y-auto max-h-[300px]'
+                                    />
+                                </form>
+                            </div>
+                        )
+                        :
+                        (
+                            <h1 className={"flex-grow pl-10 m-5 mr-1 items-center text-orange-200 max-w-md w-full text-3xl font-semibold break-all "}>
+                                {group?.name}
+                            </h1>
+                        )}
+                        {group?.ownerEmail === session?.user?.email && group !== null ?
+                        (
+                            <div className="flex flex-row flex-grow items-end">
+                                <button className={`${edit ? "bg-green-500" : ""} flex mb-6 min-w-24 flex-shrink-0 aspect-square items-center justify-center`}
+                                    onClick={() => setEdit(!edit)}>
+                                    <div className="flex-auto flex-grow min-w-16 min-h-16 flex-shrink-0">
+                                        <Image
+                                            src={"/edit_icon.png"}
+                                            alt={"Edit Icon"}
+                                            width={32}
+                                            height={32}
+                                            layout="fixed"
+                                            unoptimized={true}
+                                        />
+                                    </div>
+                                </button>
+                                <button className={"flex justify-center m-5 mr-0 p-3 items-center max-h-12 bg-green-400 text-gray-800 rounded-md font-semibold hover:bg-green-500 hover:cursor-pointer"}
+                                        onClick={toggleAdd}>
+                                        Add User
+                                </button><button className={"flex justify-center m-5 mr-0 p-3 items-center max-h-12 bg-red-800 text-black rounded-md font-semibold hover:bg-red-900 hover:cursor-pointer"}
+                                    onClick={toggleDelete}>
+                                        Delete Group
+                                </button>
+                            </div>
                         )
                         :
                         ("")}
@@ -184,7 +254,7 @@ const groupChat = () => {
                                     id="message"
                                     value={message}
                                     onChange={handleMessage}
-                                    onKeyDown={handleKeyDown}
+                                    onKeyDown={handleKeyDownMessage}
                                     placeholder='Write a message...'
                                     required
                                     maxLength={500}

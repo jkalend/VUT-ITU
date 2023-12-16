@@ -14,7 +14,7 @@ export default function createGroup({isClicked, setClicked} : {isClicked: boolea
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 "name": name, 
-                "username": session.user?.name
+                "username": session?.user?.name
             }),
         });
         setClicked(!isClicked);
@@ -46,7 +46,7 @@ export default function createGroup({isClicked, setClicked} : {isClicked: boolea
                         onChange={handleName}
                         placeholder='Enter Group Name'
                         required
-                        maxLength={50}
+                        maxLength={45}
                         className='text-black block p-2.5 w-full rounded-lg'
                     />
                     <button type='submit' className='text-gray-700 bg-amber-300 hover:bg-amber-400 outline-1 outline-red-500 hover:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
