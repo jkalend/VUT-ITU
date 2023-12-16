@@ -72,19 +72,19 @@ export default function Sidebar() {
                                 ) : (
                                     ''
                                 )}
-                                {session ? (
-                                    <li className="mb-4">
-                                        <Link
-                                            href="/species"
-                                            className="text-lg hover:text-amber-500 hover:text-2xl"
-                                            style={textStyle}
-                                        >
-                                            Add a Species
-                                        </Link>
-                                    </li>
-                                ) : (
-                                    ''
-                                )}
+                                {/*{session ? (*/}
+                                {/*    <li className="mb-4">*/}
+                                {/*        <Link*/}
+                                {/*            href="/species"*/}
+                                {/*            className="text-lg hover:text-amber-500 hover:text-2xl"*/}
+                                {/*            style={textStyle}*/}
+                                {/*        >*/}
+                                {/*            Add a Species*/}
+                                {/*        </Link>*/}
+                                {/*    </li>*/}
+                                {/*) : (*/}
+                                {/*    ''*/}
+                                {/*)}*/}
                                 <li className="mb-4">
                                     <button
                                         className="text-lg hover:text-amber-500 hover:text-2xl"

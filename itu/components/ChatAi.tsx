@@ -261,7 +261,7 @@ const ChatAi = () => {
                                         'relative top-0 w-full h-[12%] text-black text-2xl font-semibold rounded-t-3xl bg-amber-600'
                                     }
                                 >
-                                    Chat
+                                    AI Plant Assistant
                                 </button>
                                 <form
                                     className={
@@ -368,7 +368,7 @@ const ChatAi = () => {
                     }
                 >
                     <h1 className={'text-black text-2xl font-semibold'}>
-                        Chat
+                        AI Helper
                     </h1>
                 </button>
             )}

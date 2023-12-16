@@ -18,6 +18,7 @@ model User {
   comments Comment[]   @relation("UserComment")
   groups   ChatGroup[] @relation("UserChatGroup")
   messages Message[]   @relation("UserMessage")
+  stgDays  Int         @default(3)
 }
 
 model Comment {
@@ -60,15 +61,16 @@ model Species {
 }
 
 model Plant {
-  plantId     Int        @id @default(autoincrement())
-  nickname    String?
-  customImage String?
-  description String?
-  speciesId   Int
-  email       String
-  species     Species    @relation("PlantSpecies", fields: [speciesId], references: [speciesId])
-  user        User       @relation("UserPlant", fields: [email], references: [email])
-  waterings   Watering[] @relation("PlantWatering")
+  plantId      Int        @id @default(autoincrement())
+  nickname     String?
+  customImage  String?
+  speciesImage Boolean    @default(true)
+  description  String?
+  speciesId    Int
+  email        String
+  species      Species    @relation("PlantSpecies", fields: [speciesId], references: [speciesId])
+  user         User       @relation("UserPlant", fields: [email], references: [email])
+  waterings    Watering[] @relation("PlantWatering")
 }
 
 model Watering {
@@ -76,7 +78,7 @@ model Watering {
   dateWatered DateTime @default(now())
   amount      Int
   plantId     Int
-  plant       Plant    @relation("PlantWatering", fields: [plantId], references: [plantId])
+  plant       Plant    @relation("PlantWatering", fields: [plantId], references: [plantId], onDelete: Cascade)
 }
 
 model ChatGroup {

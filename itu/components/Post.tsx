@@ -15,7 +15,7 @@ export default function Post( {post, setPosts} ) {
   const [allComments, setAllComments] = useState([])
 
   useEffect(() => {
-    setAllComments(post.comments)  
+    setAllComments(post.comments)
     console.log(allComments)
   }, []);
 
@@ -249,7 +249,7 @@ export default function Post( {post, setPosts} ) {
                       </div>
                   ))}
                 </div>
-                
+
             </div>
         </div>
     </>
