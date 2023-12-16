@@ -1,5 +1,5 @@
 'use client';
-import React from 'react'
+import React, { use } from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react'
@@ -12,7 +12,7 @@ import Message from '@/components/Message';
 import Image from 'next/image';
 
 
-const groupChat = () => {
+const GroupChat = () => {
     const params = useParams();
     const router = useRouter();
     const { data: session, status } = useSession();
@@ -29,33 +29,34 @@ const groupChat = () => {
     const [messageSent, setMessageSent] = useState (false);
     const [edit, setEdit] = useState (false);
     const [groupName, setGroupName] = useState ("");
+    const [totalMessages, setTotalMessages] = useState(100);
 
     const messagesEndRef = useRef(null);
-    const inputRef = useRef(null);
 
     useEffect(() => {
         if (status === "unauthenticated"){
-            router.push("/login");
+            router.push("/");
         }
     }, [status]);
 
-    const fetchGroup = async () => {
-        try {
-            const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}`,{
-                    method: "GET",
-                    headers: {"Content-Type": "application/json"},
-                });
-            const data = await response.json();
-            console.log(data)
-            setGroup(data);
-            setGroupName(data?.name);
-        }
-        catch (err) {
-            console.log("Error" + err)
-        }
-    };
 
     useEffect(() => {
+        const fetchGroup = async () => {
+            try {
+                const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}`,{
+                        method: "GET",
+                        headers: {"Content-Type": "application/json"},
+                    });
+                const data = await response.json();
+                console.log(data)
+                setGroup(data);
+                setGroupName(data?.name);
+            }
+            catch (err) {
+                console.log("Error" + err)
+            }
+        };
+
         if (status === "authenticated"){
             fetchGroup();
         }
@@ -66,13 +67,17 @@ const groupChat = () => {
             const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/users`,{
                     method: "GET",
                     headers: {"Content-Type": "application/json"},
-                });
-            const data = await response.json();
-            console.log(data)
-            setChatters(data);
+            });
+            if(!response.ok) {
+                console.log(response.status)
+            }else{
+                const data = await response.json();
+                console.log(data);
+                setChatters(data);
+            }
         }
         catch (err) {
-            console.log("Error" + err)
+            console.log("Error" + err);
         }
     };
 
@@ -110,34 +115,60 @@ const groupChat = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
-        inputRef.current?.focus();
     }, []);
-
+    
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
     }
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+    }, []);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messageSent, status, params.groupId]);
+
+    let scrollContainer: HTMLElement | null = null;
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            scrollContainer = document.getElementById('scroll');
+        }
+        const handleScroll = () => {
+            const scrolledToTop = scrollContainer?.scrollTop === 0;
+            if (scrolledToTop) {
+                const additionalMessages = 50;
+                setTotalMessages(prevTotal => prevTotal + additionalMessages);
+            }
+        };
+    
+        scrollContainer?.addEventListener('scroll', handleScroll);
+        return () => {
+            scrollContainer?.removeEventListener('scroll', handleScroll);
+        };
+    }, [scrollContainer]);
 
     useEffect(() => {
         fetchChatters();
-    }, [addClicked, removeClicked, transfer]);
+    }, [addClicked, removeClicked, transfer, status]);
 
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`,{
-                        method: "GET",
-                        headers: {"Content-Type": "application/json"},
-                    });
-                const data = await response.json();
-                console.log(data)
-                setMessages(data);
+                const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages/${totalMessages}`,{
+                    method: "GET",
+                    headers: {"Content-Type": "application/json"},
+                });                    
+                if (!response.ok) {
+                    console.log(response.status)
+                }else{
+                    const data = await response.json();
+                    console.log(data.reverse());
+                    setMessages(data);
+                }
             }
             catch (err) {
-                console.log("Error" + err)
+                console.log(err)
             }
         }
 
@@ -150,7 +181,7 @@ const groupChat = () => {
         return () => {
             clearInterval(interval);
           };
-    }, [messageSent]);
+    }, [messageSent, session, params.groupId, totalMessages]);
 
     const toggleAdd = () => {
         setAddClicked(!addClicked)
@@ -221,7 +252,6 @@ const groupChat = () => {
                                             alt={"Edit Icon"}
                                             width={32}
                                             height={32}
-                                            layout="fixed"
                                             unoptimized={true}
                                         />
                                     </div>
@@ -239,8 +269,8 @@ const groupChat = () => {
                         ("")}
                     </div>
                     <div className={"flex flex-col w-full h-[70vmin] pl-20 pr-20"}>
-                        <div className={"flex flex-col w-full h-full relative border bg-gray-600 border-black overflow-y-auto"}>
-                            <div className="flex flex-col w-full ">
+                        <div className={"flex flex-col w-full h-full relative border bg-gray-600 border-black overflow-y-auto"} id="scroll">
+                            <div className="flex flex-col w-full" >
                                 {messages.map ((m) =>
                                     (<Message key={m.messageId} message={m} messageSent={messageSent} setMessageSent={setMessageSent}/>)
                                 )}
@@ -286,4 +316,4 @@ const groupChat = () => {
     )
 }
 
-export default groupChat
+export default GroupChat

@@ -26,35 +26,6 @@ export const POST = async (request: NextRequest, { params }) => {
     }
 } 
 
-// GET - fetch messages
-export const GET = async (request: NextRequest, { params }) => {
-    try {
-        const messages = await prisma.message.findMany({
-            where: {
-                groupId: Number(params.groupId)
-            },
-            take: 100,
-            orderBy: {
-                dateCreated: 'asc'
-            },
-            include: {
-                author: {
-                    select: {
-                        username: true,
-                        email: true,
-                    }
-                }
-            }
-        });
-
-        return new NextResponse(JSON.stringify(messages), { status: 200 })
-    } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to fetch group members", message: error.message }), { status: 500 });
-
-    }
-} 
-
-
 // DELETE - remove message
 export const DELETE = async (request: NextRequest, { params }) => {
     try {

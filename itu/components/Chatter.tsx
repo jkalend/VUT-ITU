@@ -29,7 +29,6 @@ export default function Chatter({ chatter, isClicked, setIsClicked, setChatter, 
                             alt={"Remove member"}
                             width={10}
                             height={10}
-                            layout="fixed"
                             unoptimized={true}
                         />
                     </button>
@@ -51,7 +50,6 @@ export default function Chatter({ chatter, isClicked, setIsClicked, setChatter, 
                             alt={"Remove member"}
                             width={10}
                             height={10}
-                            layout="fixed"
                             unoptimized={true}
                         />
                     </button>

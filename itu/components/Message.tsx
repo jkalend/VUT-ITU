@@ -83,7 +83,6 @@ export default function Group({ message, messageSent, setMessageSent } : {messag
                             alt={"Remove member"}
                             width={10}
                             height={10}
-                            layout="fixed"
                             unoptimized={true}
                         />
                     </button>
@@ -101,7 +100,6 @@ export default function Group({ message, messageSent, setMessageSent } : {messag
                             alt={"Remove member"}
                             width={10}
                             height={10}
-                            layout="fixed"
                             unoptimized={true}
                         />
                     </button>
