@@ -48,6 +48,7 @@ export const POST = async (
     try {
         const {name, period, amount, image} = await request.json();
         const image_name = `${name}.txt`
+        console.log(image_name)
         const species = await prisma.species.create({
             data: {
                 name: name,

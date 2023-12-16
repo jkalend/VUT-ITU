@@ -52,7 +52,7 @@ export default function createPost({isClicked, setClicked,setNewPostFlag} : {isC
     }
    
     return (
-        <div className={`${isClicked ? "collapse backdrop-blur-0" : "backdrop-blur-[5px]"} flex fixed z-30 items-center justify-center snap-center w-screen h-screen left-0 transition-all duration-200`}>
+        <div className={`${isClicked ? "collapse backdrop-blur-0" : "backdrop-blur-[5px]"} top-0 flex fixed z-30 items-center justify-center snap-center w-screen h-screen left-0 transition-all duration-200`}>
             <button className={`w-screen h-screen`} onClick={() => setClicked(!isClicked)}/>
             <div className={`${isClicked ? "hidden" : ""} m-10 p-10 flex fixed hover:cursor-auto bg-[#736349] rounded-2xl justify-center items-start flex-col max-h-[90%]  `}>
                 <div className="text-4xl text-bold">

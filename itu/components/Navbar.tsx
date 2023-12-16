@@ -56,7 +56,7 @@ export default function Navbar({
                             onClick={() => {
                                 signOut();
                             }}
-                            className="text-black bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
+                            className="text-orange-500 bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
                         >
                             Sign out
                         </button>
@@ -68,7 +68,7 @@ export default function Navbar({
                             onClick={() => {
                                 signIn("google");
                             }}
-                            className="text-black bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
+                            className="text-orange-500 bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center"
                         >
                             Sign in
                         </button>
@@ -78,8 +78,8 @@ export default function Navbar({
           {session ? session.user?.username : "Visitor"}
         </span>
                 <Image
-                    className={""}
-                    src={"/planting.png"}
+                    className={"rounded-full"}
+                    src={(session)? session.user.image:"/planting.png"}
                     alt={"Profile"}
                     width={40}
                     height={40}

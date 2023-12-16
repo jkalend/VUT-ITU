@@ -53,7 +53,7 @@ const Social = () => {
                   Join us by also sharing pictures of your beloved plants :D
                 </p>
             </div>
-            <div className={"flex flex-wrap flex-row gap-5 p-5 flex-initial justify-center"}>
+            <div className={"flex flex-wrap flex-row gap-5 p-5 overflow-auto no-scrollbar flex-initial justify-center"}>
                 {posts.map ((h) =>
                     (<Post key={h.postId} post={h} setPosts={setPosts}/>)
                 )}
