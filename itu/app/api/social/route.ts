@@ -47,7 +47,8 @@ export const POST = async (request: NextRequest) => {
 export const DELETE = async (request: NextRequest) => {
     try {
         const { postId } = await request.json();
-        const post = await prisma.post.findFirst({
+        console.log(postId)
+        const post = await prisma.post.findUnique({
             where:{
                 postId:postId
             },
@@ -55,12 +56,13 @@ export const DELETE = async (request: NextRequest) => {
                 image: true
             }
         })
-        deleteFile(`./public/images/${post.image}`)
+        console.log(post)
         const post_deleted = await prisma.post.delete({
             where:{
                 postId:postId
             }
         })
+        deleteFile(`./public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
         return new Response("Failed to create post " + error, { status: 500 })
@@ -87,9 +89,10 @@ export const GET = async (request: NextRequest) => {
             const content = await readFromFile(file_name)
             posts[i].image = content.toString()
         }
+        console.log(posts.length)
         return new Response(JSON.stringify(posts), { status: 200 })
     } catch (error) {
-        return new Response("Failed to create post"+error, { status: 500 })
+        return NextResponse.json("Failed to fetch posts"+error, { status: 500 })
     }
 } 
 

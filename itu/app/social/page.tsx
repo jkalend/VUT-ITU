@@ -24,12 +24,12 @@ const Social = () => {
         setPosts(data.sort((a,b) => {return (a.dateCreated < b.dateCreated)? 1: -1}));
       }
       catch (err) {
-        console.log("Error")
+        console.log("Error" + err)
       }
     };
 
     fetchPosts();
-
+    
     
   }, [newPostFlag]);
 

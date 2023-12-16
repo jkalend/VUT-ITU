@@ -19,6 +19,20 @@ export default function Post( {post, setPosts} ) {
     console.log(allComments)
   }, []);
 
+  const deleteComment = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault ()
+    const commId = Number(event.currentTarget.id)
+    const res = await fetch("/api/social/edit", {
+      method: "DELETE",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({"commentId":commId}),
+    });
+    if (!res.ok) {
+        console.log ("Error")
+    }
+    setAllComments((allcomms) => {return allcomms.filter((a) => (a.commentId != commId))})
+  }
+
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault ()
 
@@ -50,13 +64,14 @@ export default function Post( {post, setPosts} ) {
   }
   const handleDelete = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault ()
+    console.log(post.postId)
     const res = await fetch("/api/social/", {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({"postId":post.postId}),
     });
     if (!res.ok) {
-        console.log ("Error")
+        console.log ("Error"+res.body)
     }
     setPosts ((posts) =>  {return posts.filter((p) => p.postId != post.postId)})
   }
@@ -116,7 +131,7 @@ export default function Post( {post, setPosts} ) {
                                     onChange={handleDescription}
                                     placeholder={post.description}
                                     required
-                                    maxLength={50}
+                                    maxLength={250}
                                     className="form_textarea text-black block p-2.5 w-full rounded-sm"
                                 />
                             </>
@@ -215,12 +230,22 @@ export default function Post( {post, setPosts} ) {
                 <div className="flex flex-col w-full h-[55%] overflow-auto no-scrollbar rounded-b gap-2">
                   {allComments.map((comment) => (
                       <div className="flex flex-col w-full  justify-start bg-amber-200 rounded-lg text-amber-900">
+                        <div className="flex flex-row justify-between"> 
+                         
                           <div className="font-semibold p-2">
                               @{comment.author.username} said:
                           </div>
-                          <div className="p-2 text-amber-700">
-                              {comment.text}
-                          </div>
+                          {(session && session.user?.email == comment.author.email) ? 
+                         <>
+                          <button onClick={deleteComment} id={comment.commentId} className="h-full text-amber-900 bg-red-300 hover:bg-red-400 outline-1 outline-red-500 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center">
+                            Delete Comment
+                          </button>
+                         </>:<></>}
+                        </div>
+                          
+                        <div className="p-2 text-amber-700">
+                            {comment.text}
+                        </div>
                       </div>
                   ))}
                 </div>

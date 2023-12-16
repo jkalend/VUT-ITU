@@ -41,3 +41,20 @@ export const POST = async (request: NextRequest) => {
         return new Response("Failed to add comment "+error, { status: 500 })
     }
 } 
+
+// PUT set like count
+export const DELETE = async (request: NextRequest) => {
+    try {
+        const { commentId } = await request.json();
+        const comment = await prisma.comment.delete({
+            where: {
+                commentId:commentId
+            }
+        })
+        
+        return new Response(JSON.stringify(comment), { status: 200 })
+    } catch (error) {
+        console.log(error)
+        return new Response("Failed to add comment "+error, { status: 500 })
+    }
+} 
