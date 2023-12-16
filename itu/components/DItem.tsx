@@ -8,11 +8,11 @@ export default function DItem( {plant, isClicked, setClicked, setName, setWhichP
     <div className="w-[363px] h-[322px] relative">
         <div className="w-[363px] h-[322px] left-0 top-0 absolute bg-orange-200 rounded-lg"/>
         <button onClick={() => {
-            setClicked(!isClicked);
-            setName(plant.name);
+            // setClicked(!isClicked);
+            // setName(plant.name);
         }
         }>
-            <Image className="w-[345.29px] h-[215px] left-[8.85px] top-[9px] absolute rounded-lg" alt={"plant photo"} src={plant.image_path} width={345.29} height={215}>
+            <Image className="w-[345.29px] h-[215px] left-[8.85px] top-[9px] absolute rounded-lg" alt={"plant photo"} src={plant.customImage} width={345.29} height={215}>
             </Image>
         </button>
         <div className="w-[164.90px] left-[99.60px] top-[287px] absolute text-stone-400 text-center text-sm font-semibold]">
@@ -20,12 +20,12 @@ export default function DItem( {plant, isClicked, setClicked, setName, setWhichP
         </div>
 
         <div className="w-[318px] h-[34px] px-[21px] py-[5px] left-[25px] top-[181px] absolute bg-white bg-opacity-70 rounded-lg shadow justify-center items-center gap-2.5 inline-flex">
-            <div className="text-black text-xl font-semibold">{plant.name.toString()}</div>
+            <div className="text-black text-xl font-semibold">{plant.nickname.toString()}</div>
         </div>
 
         <button className={"w-[326px] h-[47px] px-[25px] py-[9px] left-[17px] top-[232px] absolute border border-black justify-center items-center gap-2.5 inline-flex text-white font-bold rounded-lg " + style}
                 onClick={() => {
-                    setWhichPlant(plant);
+                    //setWhichPlant(plant);
         }}>
             <div className="text-slate-700 text-2xl font-semibold">
                     Tap to Water

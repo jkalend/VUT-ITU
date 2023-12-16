@@ -2,6 +2,8 @@
 
 import OpenAI from "openai";
 import { useState, useRef, useEffect } from "react";
+import CryptoJS from "crypto-js";
+import { useSession } from "next-auth/react";
 
 type Message = {
   id: number;
@@ -10,9 +12,9 @@ type Message = {
 };
 
 const ChatAi = () => {
-  const storage = localStorage;
+  const { data: session, status } = useSession();
   const [isClicked, setClicked] = useState(false);
-  const [th, setThread] = useState(storage.getItem("thread") || "");
+  const [th, setThread] = useState("");
   const [messages, setMessages] = useState([] as Message[]);
   const openai = new OpenAI({
     apiKey: "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",
@@ -71,14 +73,88 @@ const ChatAi = () => {
     });
   }, []);
 
-  // useEffect(scrollToBottom, [messages]);
+  useEffect(() => {
+    if (status === "authenticated") {
+      const getAI = async () => {
+        const a = CryptoJS.enc.Hex.stringify(
+          CryptoJS.enc.Utf8.parse(session?.user?.email as string),
+        );
+
+        const res = await fetch(`/api/profile/${a}/AI`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await res.json();
+
+        let cipher = CryptoJS.lib.CipherParams.create({
+          ciphertext: CryptoJS.enc.Base64.parse(data.key.ciphertext),
+          iv: CryptoJS.enc.Hex.parse(data.key.iv),
+          salt: CryptoJS.enc.Hex.parse(data.key.salt),
+        });
+
+        const apiKey = CryptoJS.AES.decrypt(
+          cipher,
+          "ITUISSOOOSUPERDUPER",
+        ).toString(CryptoJS.enc.Utf8);
+
+        // console.log(apiKey);
+        // console.log(data.thread);
+
+        // openai = new OpenAI({apiKey: apiKey, dangerouslyAllowBrowser: true});
+        // setThread(data.thread);
+
+        return { apiKey: apiKey, thread: data.thread };
+      };
+
+      getAI().then((r) => {
+        if (r.thread === null) {
+          setThread("");
+        } else {
+          setThread(r.thread);
+        }
+      });
+    }
+  }, [status]);
+
   const createThread = async () => {
+    if (openai === null) {
+      return;
+    }
+    const a = CryptoJS.enc.Hex.stringify(
+      CryptoJS.enc.Utf8.parse(session?.user?.email as string),
+    );
+
     const thread = await openai.beta.threads.create();
-    storage.setItem("thread", thread.id);
+    const res = await fetch(`/api/profile/${a}/AI`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        thread: thread.id,
+      }),
+    });
     return thread.id;
   };
 
+  const handleDelete = async () => {
+    const a = CryptoJS.enc.Hex.stringify(
+      CryptoJS.enc.Utf8.parse(session?.user?.email as string),
+    );
+
+    const res = await fetch(`/api/profile/${a}/AI`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    setMessages([]);
+    setClicked(false);
+    setThread("");
+  };
+
   const chatCompletion = async (mes: string) => {
+    if (openai === null) {
+      return;
+    }
     //setMessages([...messages, {role: "user", content: mes, id: messages.length}]);
     messages.push({ role: "user", content: mes, id: messages.length });
     const message = await openai.beta.threads.messages.create(th, {
@@ -93,6 +169,9 @@ const ChatAi = () => {
     });
 
     const int = setInterval(async () => {
+      if (openai === null) {
+        return;
+      }
       const res = await openai.beta.threads.runs.retrieve(th, run.id);
       if (res.status === "completed") {
         const text = await openai.beta.threads.messages.list(th);
@@ -115,6 +194,9 @@ const ChatAi = () => {
     if (th === "") {
       // @ts-ignore
       const thread = await createThread();
+      if (thread === undefined) {
+        return;
+      }
       setThread(thread);
     } else {
       const text = await openai.beta.threads.messages.list(th);
@@ -146,9 +228,6 @@ const ChatAi = () => {
   const handleChange = (e: any) => {
     setMessage(e.target.value);
   };
-
-  // @ts-ignore
-  // setThread(createThread)
 
   return (
     <div>
@@ -189,7 +268,7 @@ const ChatAi = () => {
                 >
                   <div
                     className={
-                      "bg-amber-100 text-black w-full h-[75%] overflow-y-auto no-scrollbar rounded-b"
+                      "bg-amber-100 text-black w-full h-[75%] overflow-y-auto no-scrollbar rounded-b gap-0.5"
                     }
                   >
                     {messages.map((message) =>
@@ -248,7 +327,9 @@ const ChatAi = () => {
                     <div ref={messagesEndRef} />
                   </div>
                   <div
-                    className={"w-full flex justify-center items-center p-1"}
+                    className={
+                      "w-full flex flex-row justify-center items-center p-1"
+                    }
                   >
                     <input
                       name={"message"}
@@ -258,6 +339,15 @@ const ChatAi = () => {
                       value={message}
                       onInput={handleChange}
                     />
+                    <button
+                      type={"button"}
+                      onClick={handleDelete}
+                      className={
+                        "bg-red-600 text-black font-semibold p-1 rounded-md"
+                      }
+                    >
+                      DELETE
+                    </button>
                   </div>
                 </form>
               </div>

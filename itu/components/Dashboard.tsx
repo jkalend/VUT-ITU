@@ -6,14 +6,14 @@ import { PlantData } from "@/app/PlantData";
 
 export default function Dashboard({isClicked, setClicked, setName, data} : {isClicked: boolean, setClicked: any, setName: any, data: any}) {
     const [filteredData, setFilteredData] = useState ([] as PlantData []);
-    const [whichPlant, setWhichPlant] = useState (-1);
-    useEffect (() => {
-        if (whichPlant != -1) {
-            data[data.indexOf (whichPlant)].days = Number(data[data.indexOf (whichPlant)].watering_frequency);
-            filteredData.splice (filteredData.indexOf (whichPlant), 1);
-            setWhichPlant (-1)
-        }
-    });
+    const [whichPlant, setWhichPlant] = useState ({} as PlantData);
+    // useEffect (() => {
+    //     if (whichPlant != {}) {
+    //         data[data.indexOf (whichPlant)].days = Number(data[data.indexOf (whichPlant)].watering_frequency);
+    //         filteredData.splice (filteredData.indexOf (whichPlant), 1);
+    //         setWhichPlant (-1)
+    //     }
+    // });
 
     const [stg, setStg] = useState ({} as Settings);
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
                 let data = await getSettings();
                 if(data.days_remaining !== stg.days_remaining || data.theme !== stg.theme) {
                     setStg(data);
-                    console.log(data);
+                    //console.log(data);
                 }
                 setRefresh(!refresh);
             }
@@ -50,9 +50,9 @@ export default function Dashboard({isClicked, setClicked, setName, data} : {isCl
                 </p>
             </div>
             <div className={"flex flex-wrap flex-row gap-5 p-5 flex-initial justify-center"}>
-                {filteredData.map ((h: PlantData) =>
-                    (<DItem key={h.id} plant={h} isClicked={isClicked} setClicked={setClicked} setName={setName} setWhichPlant={setWhichPlant}/>)
-                )}
+                {filteredData.length > 0 ? filteredData.map ((h: PlantData) =>
+                    (<DItem key={h.plantId} plant={h} isClicked={isClicked} setClicked={setClicked} setName={setName} setWhichPlant={setWhichPlant}/>)
+                ) : <div className={"text-green-800 text-3xl font-semibold"}>Good job! All plants are happy</div>}
             </div>
         </div>
     );

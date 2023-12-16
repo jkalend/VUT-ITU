@@ -4,15 +4,15 @@ import {NextRequest, NextResponse} from "next/server"
 import fsPromises from 'fs/promises';
 import fs from 'fs'
 
-const saveFile = async (filename, content) => {
+const saveFile = async (filename : any, content : any) => {
   await fsPromises.writeFile(`./public/images/${filename}`, content);
 };
 
-const readFromFile = async (filename) => {
+const readFromFile = async (filename : any) => {
     const base64 = await fsPromises.readFile(`./public/images/${filename}`);
     return base64
 }
-const deleteFile = async (filename) => {
+const deleteFile = async (filename : any) => {
     await fs.unlink(filename, (err) => {
                 if (err) {
                     console.error(err);

@@ -17,6 +17,7 @@ model User {
   comments Comment[]   @relation("UserComment")
   groups   ChatGroup[] @relation("UserChatGroup")
   messages Message[]   @relation("UserMessage")
+  AiThread String?
 }
 
 model Comment {
@@ -54,7 +55,7 @@ model Species {
   name           String
   wateringPeriod Int
   wateringAmount Int
-  speciesImage   Bytes
+  speciesImage   String
   plants         Plant[] @relation("PlantSpecies")
 }
 

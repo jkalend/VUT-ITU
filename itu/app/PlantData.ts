@@ -1,4 +1,4 @@
-export type PlantData = {
+export type PlantDataOld = {
     id: number,
     name: string,
     nickname: string,
@@ -8,7 +8,19 @@ export type PlantData = {
     watering_frequency: number,
     watering_amount: number
 }
-export let Plant: PlantData[] = [{
+
+export type PlantData = {
+    plantId: number,
+    nickname: string,
+    description: string,
+    customImage: string,
+    days: number,
+    watering_frequency: number,
+    watering_amount: number
+}
+
+
+export let Plant: PlantDataOld[] = [{
     "id":0,
     "name": "aloe vera",
     "nickname": "",
