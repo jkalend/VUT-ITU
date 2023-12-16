@@ -172,7 +172,7 @@ const groupChat = () => {
                         <div className={"flex flex-col w-full h-full relative border bg-gray-600 border-black overflow-y-auto"}>
                             <div className="flex flex-col w-full ">
                                 {messages.map ((m) =>
-                                    (<Message key={m.messageId} message={m}/>)
+                                    (<Message key={m.messageId} message={m} messageSent={messageSent} setMessageSent={setMessageSent}/>)
                                 )}
                                 <div ref={messagesEndRef}/>                                  
                             </div>

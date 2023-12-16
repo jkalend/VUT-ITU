@@ -42,7 +42,7 @@ const Groups = () => {
                 <h1 className={"text-orange-200 text-3xl font-semibold"}>
                   My Chat Groups
                 </h1>
-                <button className={"ml-10 bg-orange-200 text-gray-600 rounded-md px-5 py-2 font-semibold hover:bg-orange-300 hover:cursor-pointer"}
+                <button className={"ml-10 bg-orange-300 text-gray-800 rounded-md px-5 py-2 font-semibold hover:bg-orange-400 hover:cursor-pointer"}
                     onClick={toggleCreateGroup}>
                     Create New Group
                 </button>

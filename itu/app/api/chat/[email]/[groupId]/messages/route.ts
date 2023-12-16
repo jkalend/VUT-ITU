@@ -70,3 +70,22 @@ export const DELETE = async (request: NextRequest, { params }) => {
         return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 } 
+
+// PUT - update message
+export const PUT = async (request: NextRequest, { params }) => {
+    try {
+        const { messageId, text } = await request.json();
+        const message = await prisma.message.update({
+            where: {
+                messageId: Number(messageId)
+            },
+            data: {
+                text: text,
+            }
+        });
+
+        return new NextResponse(JSON.stringify(message), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    } catch (error: any) {
+        return new NextResponse(JSON.stringify({ error: "Failed to update message: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
+}
