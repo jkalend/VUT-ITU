@@ -44,9 +44,13 @@ const Social = () => {
                   <h1 className={"text-orange-200 text-3xl font-semibold"}>
                     Posts by our community
                   </h1>
-                  <button onClick={() => setCreate(false)} className="text-orange-500 bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center">
-                    Create Post
-                  </button>
+                  {(session) ? 
+                  <>
+                    <button onClick={() => setCreate(false)} className="text-orange-500 bg-orange-200 hover:bg-orange-300 outline-1 outline-amber-600 hover:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center">
+                      Create Post
+                    </button>
+                  </>:<></>}
+                  
                 </div>
                 
                 <p className={"text-orange-200 font-semibold"}>
