@@ -1,5 +1,9 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
+
 
 // POST - add member
 export const POST = async (request: NextRequest, { params }) => {
@@ -55,10 +59,19 @@ export const GET = async (request: NextRequest, { params }) => {
             }
         });
 
-        return new NextResponse(JSON.stringify(members?.users), { status: 200 })
+        return new NextResponse(JSON.stringify(members?.users), { 
+            status: 200,
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        })
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to fetch group members", message: error.message }), { status: 500 });
-
+        return new NextResponse(JSON.stringify({ error: "Failed to fetch group members", message: error.message }), {
+            status: 500,
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     }
 } 
 
@@ -76,7 +89,9 @@ export const DELETE = async (request: NextRequest, { params }) => {
         if (!user) {
             return new NextResponse(JSON.stringify({ error: "User not found" }), {
                 status: 404,
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Content-Type': 'application/json' 
+                }
             });
         }
 
@@ -93,13 +108,23 @@ export const DELETE = async (request: NextRequest, { params }) => {
             }
         });
 
-        return new NextResponse(JSON.stringify(group), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify(group), { 
+            status: 200,
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), {
+            status: 500, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     }
 } 
 
-// PUT - update owner
+// PUT - update group owner
 export const PUT = async (request: NextRequest, { params }) => {
     try {
         const { email } = await request.json();
@@ -111,8 +136,18 @@ export const PUT = async (request: NextRequest, { params }) => {
                 ownerEmail: email
             }
         });
-        return new NextResponse(JSON.stringify(updatedGroup), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify(updatedGroup), { 
+            status: 200, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to update group: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify({ error: "Failed to update group: " + (error as Error).message }), { 
+            status: 500, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     }
 }

@@ -1,12 +1,10 @@
-//Author: Jaroslav Streit (xstrei06)
+// @ts-nocheck
+// Authors : Jaroslav Streit (xstrei06), Jan kalenda (xkalen07)
 
 'use client'
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import SlidingSwitch from './Switch'
 import CryptoJS from 'crypto-js'
 import { useSession } from 'next-auth/react'
-// import { getSettings, setDays } from '@/app/Settings'
 
 export default function SettingsOverlay({
     isClicked,
@@ -17,7 +15,7 @@ export default function SettingsOverlay({
 }) {
     const { data: session, status } = useSession()
     const [daysRemaining, setDaysRemaining] = useState(3)
-    const [isChecked, setIsChecked] = useState(false)
+    // const [isChecked, setIsChecked] = useState(false)
 
     const handleDaysRemaining = async (event: any) => {
         event.preventDefault()
@@ -27,6 +25,8 @@ export default function SettingsOverlay({
 
         const formdata = new FormData(event.target)
         setDaysRemaining(Number(formdata.get('days-remaining')))
+
+        // edit days remaining to display
         const res = await fetch(`/api/profile/${a}/settings`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

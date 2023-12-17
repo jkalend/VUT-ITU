@@ -1,12 +1,15 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 "use client";
-import {useState, useEffect} from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 export default function createGroup({isClicked, setClicked} : {isClicked: boolean, setClicked: any}) {
     const { data: session } = useSession();
     const [name, setName] = useState("");
   
-
+    // create group
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         const res = await fetch(`/api/chat/${session?.user?.email}`, {
@@ -24,6 +27,7 @@ export default function createGroup({isClicked, setClicked} : {isClicked: boolea
         }
     }
 
+    // handle group name input
     const handleName = (event: any) => {
         setName(event.target.value);
     }

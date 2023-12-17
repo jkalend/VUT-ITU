@@ -1,5 +1,7 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 "use client";
-import {useState, useEffect} from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -7,7 +9,7 @@ export default function confirmDelete({isClicked, setClicked, group} : {isClicke
     const { data: session } = useSession();
     const router = useRouter();
   
-
+    // delete group
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}`, {

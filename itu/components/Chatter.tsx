@@ -1,3 +1,7 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
+"use client";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 
@@ -6,11 +10,13 @@ export default function Chatter({ chatter, isClicked, setIsClicked, setChatter, 
 
     const { data: session } = useSession();
 
+    // toggle remove member form
     const toggleRemove = () => {
         setChatter(chatter);
         setIsClicked(!isClicked);
     }
 
+    // toggle transfer ownership form
     const toggleTransfer = () => {
         setTransfer(!transfer);
     }

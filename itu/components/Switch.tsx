@@ -1,6 +1,7 @@
-//Author: Jaroslav Streit (xstrei06)
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
 
-import React, { useState } from 'react';
+import React from 'react';
 import { setTheme} from "@/app/Settings";
 
 function SlidingSwitch({isChecked, setIsChecked} : {isChecked: boolean, setIsChecked: any}) {

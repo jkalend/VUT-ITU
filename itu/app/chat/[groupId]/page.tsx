@@ -1,8 +1,8 @@
-
-
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
 
 'use client';
-import React, { use } from 'react'
+import React from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react'
@@ -35,8 +35,9 @@ const GroupChat = () => {
     const [totalMessages, setTotalMessages] = useState(100);
     const [scrollDown, setScrollDown] = useState(false);
 
-    const messagesEndRef = useRef(null);
-
+    const messagesEndRef = useRef(null); // reference to the last message
+    
+    // redirect to overview if user is unauthenticated
     useEffect(() => {
         if (status === "unauthenticated"){
             router.push("/");
@@ -44,6 +45,7 @@ const GroupChat = () => {
     }, [status]);
 
 
+    // fetch group data
     useEffect(() => {
         const fetchGroup = async () => {
             try {
@@ -66,6 +68,7 @@ const GroupChat = () => {
         }
     }, [status, edit]);
 
+    // fetch all users in group
     const fetchChatters = async () => {
         try {
             const response = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/users`,{
@@ -85,6 +88,7 @@ const GroupChat = () => {
         }
     };
 
+    // send message on enter key press
     const handleKeyDownMessage = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -92,6 +96,7 @@ const GroupChat = () => {
         }
     };
 
+    // edit group name on enter key press
     const handleKeyDownGroup = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -99,16 +104,19 @@ const GroupChat = () => {
         }
     };
 
+    // set scroll to bottom on first render
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
     }, []);
     
+    // function to scroll to bottom of chat
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
     }
 
+    // scroll to bottom on first render
     useEffect(() => {
         scrollToBottom();
     }, []);
@@ -117,6 +125,7 @@ const GroupChat = () => {
         return new Promise( res => setTimeout(res, delay) );
     }
 
+    // scroll to bottom after one second delay when new message is sent
     useEffect(() => {
         async function scroll() {
             await timeout(1000);
@@ -125,7 +134,9 @@ const GroupChat = () => {
         scroll();
     }, [scrollDown, status, params.groupId, session]);
 
+
     let scrollContainer: HTMLElement | null = null;
+    // handle scroll to top to load more messages
     useEffect(() => {
         if (typeof document !== 'undefined') {
             scrollContainer = document.getElementById('scroll');
@@ -144,10 +155,12 @@ const GroupChat = () => {
         };
     }, [scrollContainer]);
 
+    // fetch all users in group on add/remove user
     useEffect(() => {
         fetchChatters();
     }, [addClicked, removeClicked, transfer, status, session, params.groupId]);
 
+    // fetch all messages in group every 3 seconds or when new message is sent by current user
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -181,6 +194,7 @@ const GroupChat = () => {
           };
     }, [messageSent, session, params.groupId, totalMessages]);
 
+    // save new message to database
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         const res = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`, {
@@ -198,22 +212,27 @@ const GroupChat = () => {
         }
     }
 
+    // toggle add user form
     const toggleAdd = () => {
         setAddClicked(!addClicked)
     }
 
+    // toggle remove user form
     const toggleDelete = () => {
         setDeleteClicked(!deleteClicked)
     }
 
+    // handle message input
     const handleMessage = (event: any) => {
         setMessage(event.target.value);
     }
 
+    // handle group name input
     const handleGroupName = (event: any) => {
         setGroupName(event.target.value);
     }
 
+    // save new group name to database
     const onEdit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         if(groupName !== group?.name) {

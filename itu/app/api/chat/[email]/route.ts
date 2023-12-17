@@ -1,3 +1,6 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
 
@@ -18,9 +21,19 @@ export const POST = async (request: NextRequest, { params }) => {
                 }
             }
         })
-        return new Response(JSON.stringify(group), { status: 200 })
+        return new NextResponse(JSON.stringify(group), {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+        });
     } catch (error) {
-        return new Response("Failed to group " + error, { status: 500 })
+        return new NextResponse(JSON.stringify({ error: 'Failed to group ' + error }), {
+            status: 500,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+        });
     }
 } 
 
@@ -36,8 +49,18 @@ export const GET = async (request: NextRequest, { params }) => {
                 }
             }
         })
-        return new Response(JSON.stringify(groups), { status: 200 })
+        return new NextResponse(JSON.stringify(groups), {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+        });
     } catch (error) {
-        return new Response("Failed to fetch groups" + error, { status: 500 })
+        return new NextResponse(JSON.stringify({ error: 'Failed to fetch groups ' + error }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
     }
 } 

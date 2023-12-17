@@ -1,3 +1,6 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -6,6 +9,7 @@ export default function removeChatter({isClicked, setClicked, group, user} : {is
     const { data: session } = useSession();
     const router = useRouter();
 
+    // remove member from a group
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}/users`, {

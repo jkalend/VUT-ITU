@@ -1,5 +1,8 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 "use client";
-import React, { use } from 'react'
+import React from 'react'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import Group from '@components/Group'
@@ -12,6 +15,7 @@ const Groups = () => {
     const [isClicked, setClicked] = useState(true);
     const [group, setGroup] = useState("");
 
+    // fetch all groups of the user or filter them by name if group is not empty
     const fetchGroups = async () => {
         try {
             if(group === "") {
@@ -47,12 +51,13 @@ const Groups = () => {
         fetchGroups();
     }, []);
 
+    // toggle create group form
     const toggleCreateGroup = () => {
         setClicked(!isClicked)
     }
 
     useEffect(() => {
-        
+        // fetch groups every 10 seconds
         const interval = setInterval(() => {
             if(group === ""){
                 fetchGroups();
@@ -62,10 +67,12 @@ const Groups = () => {
         return () => clearInterval(interval);
     }, [isClicked, status, session, group]);
 
+    // handle group name input
     const handleGroupName = (event: any) => {
         setGroup(event.target.value);
     }
 
+    // handle enter key press to submit search
     const handleKeyDown = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();

@@ -1,4 +1,8 @@
-import { format, set } from 'date-fns';
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
+"use client";
+import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -13,6 +17,7 @@ export default function Message({ message, messageSent, setMessageSent } : {mess
     const [deleteMessage, setDeleteMessage] = useState(false);
     const [msg, setMsg] = useState(message.text);
     
+    // edit message
     const onEdit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault ();
         if(msg !== message.text) {
@@ -29,6 +34,7 @@ export default function Message({ message, messageSent, setMessageSent } : {mess
         setEdit(!edit);
     }
 
+    // edit message on enter key press
     const handleKeyDown = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -36,10 +42,12 @@ export default function Message({ message, messageSent, setMessageSent } : {mess
         }
     };
 
+    // handle message input
     const handleMessage = (event: any) => {
         setMsg(event.target.value);
     }
 
+    // handling delete button click reset
     useEffect(() => {
         if(deleteMessage) {
             const timer = setTimeout(() => {
@@ -49,6 +57,7 @@ export default function Message({ message, messageSent, setMessageSent } : {mess
         }
     }, [deleteMessage]);
 
+    // delete message after clicking the button twice in 3 seconds
     const handleDelete = async () => {
         if(deleteMessage) {
             const res = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`, {

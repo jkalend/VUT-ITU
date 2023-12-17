@@ -1,4 +1,9 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
+"use client";
 export default function Group({ group } : {group: any}) {
+    // render group component
     return (
         <a href={`/chat/${group.groupId}`} className="flex flex-col h-40 w-44">
             <button className="aspect-auto h-full max-w-xs bg-orange-300 rounded-xl hover:bg-orange-400 hover:cursor-pointer">

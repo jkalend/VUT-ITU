@@ -1,5 +1,9 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
+
 
 // POST - send message
 export const POST = async (request: NextRequest, { params }) => {
@@ -36,13 +40,23 @@ export const DELETE = async (request: NextRequest, { params }) => {
             },
         });
 
-        return new NextResponse(JSON.stringify(message), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify(message), { 
+            status: 200, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify({ error: "Failed to remove member: " + (error as Error).message }), { 
+            status: 500, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     }
 } 
 
-// PUT - update message
+// PUT - edit message
 export const PUT = async (request: NextRequest, { params }) => {
     try {
         const { messageId, text } = await request.json();
@@ -56,8 +70,18 @@ export const PUT = async (request: NextRequest, { params }) => {
             }
         });
 
-        return new NextResponse(JSON.stringify(message), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify(message), { 
+            status: 200, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to update message: " + (error as Error).message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        return new NextResponse(JSON.stringify({ error: "Failed to update message: " + (error as Error).message }), { 
+            status: 500, 
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
+        });
     }
 }

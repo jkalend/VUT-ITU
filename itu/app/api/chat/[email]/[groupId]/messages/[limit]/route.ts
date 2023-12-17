@@ -1,5 +1,9 @@
+// @ts-nocheck
+// Author : Jaroslav Streit (xstrei06)
+
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"
+
 
 // GET - fetch messages
 export const GET = async (request: NextRequest, { params }) => {
@@ -22,8 +26,18 @@ export const GET = async (request: NextRequest, { params }) => {
             }
         });
 
-        return new NextResponse(JSON.stringify(messages), { status: 200 })
+        return new NextResponse(JSON.stringify(messages), { 
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
     } catch (error: any) {
-        return new NextResponse(JSON.stringify({ error: "Failed to fetch group members", message: error.message }), { status: 500 });
+        return new NextResponse(JSON.stringify({ error: "Failed to fetch group members", message: error.message }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
     }
 } 
