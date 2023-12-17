@@ -52,6 +52,7 @@ export const PUT = async (request: NextRequest, { params }) => {
             },
             data: {
                 text: text,
+                edited: true,
             }
         });
 
