@@ -4,6 +4,7 @@ import Dashboard from '@components/Dashboard'
 import { useState, useEffect } from 'react'
 import { PlantData } from './PlantData'
 import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 var CryptoJS = require('crypto-js')
 
 export default function Home() {
@@ -59,6 +60,8 @@ export default function Home() {
     }, [status])
 
     if (status === 'loading') return <div>Loading...</div>
+
+    if (status === 'unauthenticated') return redirect('/social')
 
     if (status === 'authenticated')
         return (

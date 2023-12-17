@@ -53,15 +53,17 @@ export default function Sidebar() {
                             style={sidebarStyle}
                         >
                             <ul className="mt-16 fixed gap-2">
-                                <li className="mb-4">
-                                    <Link
-                                        href="/"
-                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
-                                        style={textStyle}
-                                    >
-                                        Overview
-                                    </Link>
-                                </li>
+                                {session && (
+                                    <li className="mb-4">
+                                        <Link
+                                            href="/"
+                                            className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
+                                            style={textStyle}
+                                        >
+                                            Overview
+                                        </Link>
+                                    </li>
+                                )}
                                 {session ? (
                                     <li className="mb-4">
                                         <Link
@@ -106,15 +108,19 @@ export default function Sidebar() {
                                         Chat
                                     </Link>
                                 </li>
-                                <li className="mb-4">
-                                    <button
-                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
-                                        style={textStyle}
-                                        onClick={() => setClicked(!isClicked)}
-                                    >
-                                        Settings
-                                    </button>
-                                </li>
+                                {session && (
+                                    <li className="mb-4">
+                                        <button
+                                            className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
+                                            style={textStyle}
+                                            onClick={() =>
+                                                setClicked(!isClicked)
+                                            }
+                                        >
+                                            Settings
+                                        </button>
+                                    </li>
+                                )}
                             </ul>
                         </nav>
                     </div>
