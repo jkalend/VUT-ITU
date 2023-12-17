@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 
-export default function Group({ message, messageSent, setMessageSent } : {message: any, messageSent: boolean, setMessageSent: any}) {
+export default function Message({ message, messageSent, setMessageSent } : {message: any, messageSent: boolean, setMessageSent: any}) {
     const { data: session } = useSession();
     const params = useParams();
 
@@ -71,7 +71,8 @@ export default function Group({ message, messageSent, setMessageSent } : {messag
             <div className="flex flex-row break-words items-center relative">
                 <h2 className="font-bold mr-3 text-amber-300 break-all flex-wrap">{message.author.username}</h2>
                 <p className="text-xs mr-3 text-gray-400 break-all flex-wrap">{date}</p>
-                <p className="text-xs text-gray-400 break-all flex-wrap">{message.author.email}</p>
+                <p className="text-xs mr-3 text-gray-400 break-all flex-wrap">{message.author.email}</p>
+                {message.edited ? <p className="text-xs text-gray-400 break-all flex-wrap">edited</p> : ""}
                 <div className="flex flex-row p-2 h-16 absolute right-0">
                     {message.author.email === session?.user?.email ?
                     (

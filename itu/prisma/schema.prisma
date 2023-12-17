@@ -94,6 +94,7 @@ model Message {
   messageId   Int       @id @default(autoincrement())
   text        String    @db.VarChar(505)
   dateCreated DateTime  @default(now())
+  edited      Boolean   @default(false)
   email       String
   groupId     Int
   author      User      @relation("UserMessage", fields: [email], references: [email])
