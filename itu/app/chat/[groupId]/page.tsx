@@ -1,3 +1,6 @@
+
+
+
 'use client';
 import React, { use } from 'react'
 import { useEffect, useState, useRef } from 'react'
@@ -30,6 +33,7 @@ const GroupChat = () => {
     const [edit, setEdit] = useState (false);
     const [groupName, setGroupName] = useState ("");
     const [totalMessages, setTotalMessages] = useState(100);
+    const [scrollDown, setScrollDown] = useState(false);
 
     const messagesEndRef = useRef(null);
 
@@ -81,22 +85,6 @@ const GroupChat = () => {
         }
     };
 
-    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault ();
-        const res = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                "text": message,
-            }),
-        });
-        setMessage("");
-        setMessageSent(!messageSent);
-        if (!res.ok) {
-            console.log(res.status)
-        }
-    }
-
     const handleKeyDownMessage = async (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -125,9 +113,17 @@ const GroupChat = () => {
         scrollToBottom();
     }, []);
 
+    function timeout(delay: number) {
+        return new Promise( res => setTimeout(res, delay) );
+    }
+
     useEffect(() => {
-        scrollToBottom();
-    }, [messageSent, status, params.groupId]);
+        async function scroll() {
+            await timeout(1000);
+            scrollToBottom();
+        }
+        scroll();
+    }, [scrollDown, status, params.groupId, session]);
 
     let scrollContainer: HTMLElement | null = null;
     useEffect(() => {
@@ -150,7 +146,7 @@ const GroupChat = () => {
 
     useEffect(() => {
         fetchChatters();
-    }, [addClicked, removeClicked, transfer, status]);
+    }, [addClicked, removeClicked, transfer, status, session, params.groupId]);
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -163,8 +159,10 @@ const GroupChat = () => {
                     console.log(response.status)
                 }else{
                     const data = await response.json();
-                    console.log(data.reverse());
-                    setMessages(data);
+                    console.log(data);
+                    if(data.reverse() !== messages){
+                        setMessages(data);
+                    }
                 }
             }
             catch (err) {
@@ -176,12 +174,29 @@ const GroupChat = () => {
 
         const interval = setInterval(() => {
             fetchMessages();
-        }, 5000);
+        }, 3000);
 
         return () => {
             clearInterval(interval);
           };
     }, [messageSent, session, params.groupId, totalMessages]);
+
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault ();
+        const res = await fetch(`/api/chat/${session?.user?.email}/${params.groupId}/messages`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                "text": message,
+            }),
+        });
+        setMessage("");
+        setMessageSent(!messageSent);
+        setScrollDown(!scrollDown);
+        if (!res.ok) {
+            console.log(res.status)
+        }
+    }
 
     const toggleAdd = () => {
         setAddClicked(!addClicked)

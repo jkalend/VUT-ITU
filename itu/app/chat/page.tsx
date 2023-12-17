@@ -2,7 +2,6 @@
 import React, { use } from 'react'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import prisma from '@/app/db'
 import Group from '@components/Group'
 import CreateGroup from '@components/CreateGroup'
 
@@ -16,7 +15,7 @@ const Groups = () => {
     const fetchGroups = async () => {
         try {
             if(group === "") {
-            const res = await fetch(`/api/chat/${session?.user?.email}`,{
+                const res = await fetch(`/api/chat/${session?.user?.email}`,{
                     method: "GET",
                     headers: {"Content-Type": "application/json"},
                 });
@@ -53,8 +52,15 @@ const Groups = () => {
     }
 
     useEffect(() => {
-        fetchGroups();
-    }, [isClicked, status, session]);
+        
+        const interval = setInterval(() => {
+            if(group === ""){
+                fetchGroups();
+            }
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [isClicked, status, session, group]);
 
     const handleGroupName = (event: any) => {
         setGroup(event.target.value);

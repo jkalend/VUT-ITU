@@ -7,7 +7,7 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
     const [email, setEmail] = useState("");
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault ();
+        event.preventDefault();
         const res = await fetch(`/api/chat/${session?.user?.email}/${group.groupId}/users`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},

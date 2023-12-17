@@ -12,13 +12,13 @@ model User {
   email    String      @id @unique
   username String      @unique
   AiThread String?
+  stgDays  Int         @default(3)
   posts    Post[]      @relation("UserPost")
   plants   Plant[]     @relation("UserPlant")
   likes    Post[]      @relation("LikedPosts")
   comments Comment[]   @relation("UserComment")
   groups   ChatGroup[] @relation("UserChatGroup")
   messages Message[]   @relation("UserMessage")
-  stgDays  Int         @default(3)
 }
 
 model Comment {
@@ -64,10 +64,10 @@ model Plant {
   plantId      Int        @id @default(autoincrement())
   nickname     String?
   customImage  String?
-  speciesImage Boolean    @default(true)
   description  String?
   speciesId    Int
   email        String
+  speciesImage Boolean    @default(true)
   species      Species    @relation("PlantSpecies", fields: [speciesId], references: [speciesId])
   user         User       @relation("UserPlant", fields: [email], references: [email])
   waterings    Watering[] @relation("PlantWatering")
