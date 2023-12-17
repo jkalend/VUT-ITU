@@ -18,7 +18,7 @@ export const saveFile = async (filename: any, content: any) => {
     }
     else if (env == "production"){
     // do something
-        await fsPromises.writeFile(`images/${filename}`, content)
+        await fsPromises.writeFile(`/images/${filename}`, content)
     }
     
 }
@@ -32,7 +32,7 @@ export const readFromFile = async (filename: any) => {
     }
     else if (env == "production"){
     // do something
-        const base64 = await fsPromises.readFile(`images/${filename}`)
+        const base64 = await fsPromises.readFile(`/images/${filename}`)
         return base64
     }
     
@@ -92,7 +92,7 @@ export const DELETE = async (request: NextRequest) => {
             deleteFile(`public/images/${post.image}`)
         }
         else if (env == "production"){
-            deleteFile(`images/${post.image}`)
+            deleteFile(`/images/${post.image}`)
         }
             
         //deleteFile(`public/images/${post.image}`)
