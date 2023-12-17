@@ -23,6 +23,8 @@ export const GET = async (request: NextRequest) => {
 // add new species
 export const POST = async (request: NextRequest) => {
     try {
+        return NextResponse.json('not added', { status: 403 })
+
         const { name, period, amount, image } = await request.json()
         const image_name = `${name}.txt`
         const species = await prisma.species.create({
