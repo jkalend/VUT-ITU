@@ -2,7 +2,6 @@
 // Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { deleteFile, saveFile } from '@/app/api/social/route'
 
 var CryptoJS = require('crypto-js')
 
@@ -16,16 +15,7 @@ export const DELETE = async (
             where: {
                 plantId: Number(params.plantId),
             },
-            select: {
-                speciesImage: true,
-                customImage: true,
-            },
         })
-
-        // delete custom plant image
-        if (plant?.speciesImage == false) {
-            deleteFile(`./public/images/${plant?.customImage}`)
-        }
 
         const _ = await prisma.plant.delete({
             where: {
@@ -48,8 +38,8 @@ export const PUT = async (
     try {
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        const { nickname, description, image, species } = await request.json()
-        let image_name = `plant-${email}${Date.now()}.txt`
+        let { nickname, description, image, species } = await request.json()
+
         // get old plant data
         const plant = await prisma.plant.findUnique({
             where: {
@@ -57,8 +47,6 @@ export const PUT = async (
             },
             select: {
                 speciesId: true,
-                speciesImage: true,
-                customImage: true,
             },
         })
 
@@ -68,16 +56,16 @@ export const PUT = async (
                 speciesId: species,
             },
             select: {
-                speciesImage: true,
+                speciesImage: image ? false : true,
                 wateringAmount: true,
                 wateringPeriod: true,
             },
         })
 
-        // if plant species changed and no new image was provided, use species image
+        // if plant species changed, use species image
         if (plant?.speciesId != species) {
             if (image == '') {
-                image_name = spc?.speciesImage as string
+                image = spc?.speciesImage
             }
         }
 
@@ -91,30 +79,11 @@ export const PUT = async (
                 description: description,
                 customImage:
                     image || plant?.speciesId != species
-                        ? image_name
+                        ? Buffer.from(image, 'utf8')
                         : undefined,
-                speciesImage: !image && plant?.speciesId != species,
                 speciesId: plant?.speciesId != species ? species : undefined,
             },
         })
-
-        // save custom image if provided and delete old one
-        if (image != '') {
-            if (plant?.speciesImage == false) {
-                //is custom image
-                deleteFile(`./public/images/${plant?.customImage}`)
-            }
-            await saveFile(updated.customImage, image)
-            updated.customImage = image
-        }
-        if (
-            plant?.speciesImage == false && //is custom image
-            image == '' && //no new image
-            plant?.speciesId != species //species changed
-        ) {
-            console.log('delete old image')
-            deleteFile(`./public/images/${plant?.customImage}`)
-        }
 
         // update watering if species changed
         if (plant?.speciesId != species) {

@@ -61,16 +61,15 @@ model Species {
 }
 
 model Plant {
-  plantId      Int        @id @default(autoincrement())
-  nickname     String?
-  customImage  String?
-  description  String?
-  speciesId    Int
-  email        String
-  speciesImage Boolean    @default(true)
-  species      Species    @relation("PlantSpecies", fields: [speciesId], references: [speciesId])
-  user         User       @relation("UserPlant", fields: [email], references: [email])
-  waterings    Watering[] @relation("PlantWatering")
+  plantId     Int        @id @default(autoincrement())
+  nickname    String?
+  customImage Bytes?
+  description String?
+  speciesId   Int
+  email       String
+  species     Species    @relation("PlantSpecies", fields: [speciesId], references: [speciesId])
+  user        User       @relation("UserPlant", fields: [email], references: [email])
+  waterings   Watering[] @relation("PlantWatering")
 }
 
 model Watering {

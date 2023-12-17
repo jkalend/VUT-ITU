@@ -38,9 +38,7 @@ export const GET = async (
         })
 
         for (let i = 0; i < plants.length; i++) {
-            const file_name = plants[i].customImage
-            const content = await readFromFile(file_name)
-            plants[i].customImage = content.toString()
+            plants[i].customImage = plants[i].customImage.toString('utf8')
         }
 
         return NextResponse.json(plants, { status: 200 })

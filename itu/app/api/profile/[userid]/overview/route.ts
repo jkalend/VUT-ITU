@@ -2,7 +2,6 @@
 // Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { readFromFile } from '@/app/api/social/route'
 
 var CryptoJS = require('crypto-js')
 
@@ -40,9 +39,7 @@ export const GET = async (
         })
 
         for (let i = 0; i < plants.length; i++) {
-            const file_name = plants[i].customImage
-            const content = await readFromFile(file_name)
-            plants[i].customImage = content.toString()
+            plants[i].customImage = plants[i].customImage.toString('utf8')
         }
 
         return NextResponse.json(plants, { status: 200 })
