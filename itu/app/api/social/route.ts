@@ -3,7 +3,6 @@
  * author: Tereza Kubincova (xkubin27)
  */
 
-
 // POST - create new post
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
@@ -15,8 +14,20 @@ export const saveFile = async (filename: any, content: any) => {
 }
 
 export const readFromFile = async (filename: any) => {
-    const base64 = await fsPromises.readFile(`./public/images/${filename}`)
-    return base64
+    const env = process.env.NODE_ENV
+    if (env == 'development') {
+        const base64 = await fsPromises.readFile(`public/images/${filename}`)
+        return base64
+    } else if (env == 'production') {
+        //const base64 = await fsPromises.readFile(`/images/${filename}`)
+        console.log('reading from file')
+        const abc = await fsPromises.writeFile(`images.txt`, 'Hello World')
+        console.log('abc')
+        const d = await fsPromises.realpath('images.txt')
+        console.log(d)
+        const base64 = await fsPromises.readFile(`test.txt`)
+        return base64
+    }
 }
 export const deleteFile = async (filename: any) => {
     await fs.unlink(filename, (err) => {
@@ -68,7 +79,14 @@ export const DELETE = async (request: NextRequest) => {
             },
         })
         console.log('post delted', post_deleted)
-        deleteFile(`./public/images/${post.image}`)
+        const env = process.env.NODE_ENV
+        if (env == 'development') {
+            deleteFile(`public/images/${post.image}`)
+        } else if (env == 'production') {
+            deleteFile(`/images/${post.image}`)
+        }
+
+        //deleteFile(`public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
         console.log(error)

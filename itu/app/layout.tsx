@@ -8,8 +8,8 @@ import Provider from '@components/Provider'
 import ChatAi from '@components/ChatAi'
 
 export const metadata: Metadata = {
-    title: 'Water Me',
-    description: 'A simple app to help you remember to water your plants',
+    title: 'Waterwise',
+    description: '',
 }
 
 export default function RootLayout({

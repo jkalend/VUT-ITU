@@ -51,7 +51,7 @@ export default function Post( {post, setPosts} ) {
         console.log ("Error")
     }
     const resp = await res.json()
-    allComments.push({"author": {"username":session?.user?.name.replace(" ", "").toLowerCase()}, "text":comment})
+    allComments.push({"author": {"email":session?.user?.email, "username":session?.user?.name.replace(" ", "").toLowerCase()}, "text":comment})
     setComment("")
   }
 

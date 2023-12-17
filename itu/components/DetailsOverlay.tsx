@@ -1,6 +1,8 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 'use client'
 import Image from 'next/image'
-import { getPlantDetail, PlantData } from '@/app/PlantData'
+import { PlantData } from '@/app/PlantData'
 import { useState, useEffect } from 'react'
 import CryptoJS from 'crypto-js'
 import { useSession } from 'next-auth/react'
