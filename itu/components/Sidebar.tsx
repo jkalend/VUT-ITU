@@ -49,11 +49,11 @@ export default function Sidebar() {
                             }`}
                             style={sidebarStyle}
                         >
-                            <ul className="mt-16 fixed">
-                                <li className="mb-4 ">
+                            <ul className="mt-16 fixed gap-2">
+                                <li className="mb-4">
                                     <Link
                                         href="/"
-                                        className="text-lg hover:text-amber-500 hover:text-2xl"
+                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
                                         style={textStyle}
                                     >
                                         Overview
@@ -63,7 +63,7 @@ export default function Sidebar() {
                                     <li className="mb-4">
                                         <Link
                                             href="/my-plants"
-                                            className="text-lg hover:text-amber-500 hover:text-2xl"
+                                            className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
                                             style={textStyle}
                                         >
                                             My Plants
@@ -87,7 +87,7 @@ export default function Sidebar() {
                                 {/*)}*/}
                                 <li className="mb-4">
                                     <button
-                                        className="text-lg hover:text-amber-500 hover:text-2xl"
+                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
                                         style={textStyle}
                                         onClick={() => setClicked(!isClicked)}
                                     >
@@ -97,7 +97,7 @@ export default function Sidebar() {
                                 <li className="mb-4">
                                     <Link
                                         href="/social"
-                                        className="text-lg hover:text-amber-500 hover:text-2xl"
+                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
                                         style={textStyle}
                                     >
                                         Community
@@ -106,7 +106,7 @@ export default function Sidebar() {
                                 <li className="mb-4">
                                     <Link
                                         href="/chat"
-                                        className="text-lg hover:text-amber-500 hover:text-2xl"
+                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
                                         style={textStyle}
                                     >
                                         Chat
