@@ -99,15 +99,17 @@ export default function Sidebar() {
                                         Community
                                     </Link>
                                 </li>
-                                <li className="mb-4">
-                                    <Link
-                                        href="/chat"
-                                        className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
-                                        style={textStyle}
-                                    >
-                                        Chat
-                                    </Link>
-                                </li>
+                                {session && (
+                                    <li className="mb-4">
+                                        <Link
+                                            href="/chat"
+                                            className="text-lg hover:text-amber-500 hover:text-2xl leading-8"
+                                            style={textStyle}
+                                        >
+                                            Chat
+                                        </Link>
+                                    </li>
+                                )}
                                 {session && (
                                     <li className="mb-4">
                                         <button
