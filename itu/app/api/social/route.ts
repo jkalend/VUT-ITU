@@ -3,7 +3,6 @@
  * author: Tereza Kubincova (xkubin27)
  */
 
-
 // POST - create new post
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
@@ -11,31 +10,19 @@ import fsPromises from 'fs/promises'
 import fs from 'fs'
 
 export const saveFile = async (filename: any, content: any) => {
-    const env = process.env.NODE_ENV
-    if(env == "development"){
-    // do something
-        await fsPromises.writeFile(`public/images/${filename}`, content)
-    }
-    else if (env == "production"){
-    // do something
-        await fsPromises.writeFile(`/images/${filename}`, content)
-    }
-    
+    await fsPromises.writeFile(`./public/images/${filename}`, content)
 }
 
 export const readFromFile = async (filename: any) => {
     const env = process.env.NODE_ENV
-    if(env == "development"){
-    // do something
+    if (env == 'development') {
         const base64 = await fsPromises.readFile(`public/images/${filename}`)
         return base64
-    }
-    else if (env == "production"){
-    // do something
-        const base64 = await fsPromises.readFile(`/images/${filename}`)
+    } else if (env == 'production') {
+        //const base64 = await fsPromises.readFile(`/images/${filename}`)
+        const base64 = await fsPromises.readFile(`/test.txt`)
         return base64
     }
-    
 }
 export const deleteFile = async (filename: any) => {
     await fs.unlink(filename, (err) => {
@@ -88,13 +75,12 @@ export const DELETE = async (request: NextRequest) => {
         })
         console.log('post delted', post_deleted)
         const env = process.env.NODE_ENV
-        if(env == "development"){
+        if (env == 'development') {
             deleteFile(`public/images/${post.image}`)
-        }
-        else if (env == "production"){
+        } else if (env == 'production') {
             deleteFile(`/images/${post.image}`)
         }
-            
+
         //deleteFile(`public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
