@@ -1,28 +1,11 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import fsPromises from 'fs/promises'
-import fs from 'fs'
 import CryptoJS from 'crypto-js'
+import { saveFile } from '@/app/api/social/route'
 
-const saveFile = async (filename, content) => {
-    await fsPromises.writeFile(`./public/images/${filename}`, content)
-}
-
-const readFromFile = async (filename) => {
-    const base64 = await fsPromises.readFile(`./public/images/${filename}`)
-    return base64
-}
-const deleteFile = (filename) => {
-    fs.unlink(filename, (err) => {
-        if (err) {
-            console.error(err)
-            return
-        } else {
-            console.log('Success')
-        }
-    })
-}
-
+// add new plant to database
 export const POST = async (
     request: NextRequest,
     { params }: { params: { userid: string } }
@@ -34,6 +17,7 @@ export const POST = async (
         let { nickname, description, species, image } = await request.json()
         const image_name = `plant-${email}${Date.now()}.txt`
 
+        // get species data
         const res = await prisma.species.findUnique({
             where: {
                 speciesId: species,
@@ -46,10 +30,7 @@ export const POST = async (
             },
         })
 
-        // if (image == '') {
-        //     image = res?.speciesImage
-        // }
-
+        // add plant to database
         const post = await prisma.plant.create({
             data: {
                 email: email,
@@ -60,6 +41,7 @@ export const POST = async (
                 speciesImage: !image,
             },
         })
+        // add initial watering to database
         const rs = await prisma.watering.create({
             data: {
                 plantId: post.plantId,

@@ -1,23 +1,19 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import fsPromises from 'fs/promises'
+import { readFromFile } from '@/app/api/social/route'
 
 var CryptoJS = require('crypto-js')
 
-const readFromFile = async (filename) => {
-    const base64 = await fsPromises.readFile(`./public/images/${filename}`)
-    return base64
-}
-
+// get plant data for overview
 export const GET = async (
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) => {
     try {
-        // console.log(params);
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const plants = await prisma.plant.findMany({
             where: {
                 email: email,
@@ -42,8 +38,6 @@ export const GET = async (
                 },
             },
         })
-
-        console.log(plants[0].waterings)
 
         for (let i = 0; i < plants.length; i++) {
             const file_name = plants[i].customImage

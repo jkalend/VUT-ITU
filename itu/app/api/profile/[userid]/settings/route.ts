@@ -1,17 +1,18 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 var CryptoJS = require('crypto-js')
 
+// get settings
 export const GET = async (
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) => {
     try {
-        // console.log(params);
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const user = await prisma.user.findUnique({
             where: {
                 email: email,
@@ -28,16 +29,15 @@ export const GET = async (
     }
 }
 
+// update settings
 export const PUT = async (
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) => {
     try {
-        // console.log(params);
         const { stgDays } = await request.json()
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const user = await prisma.user.update({
             where: {
                 email: email,

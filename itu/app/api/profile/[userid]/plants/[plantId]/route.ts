@@ -1,34 +1,17 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs'
-import fsPromises from 'fs/promises'
+import { deleteFile, saveFile } from '@/app/api/social/route'
 
 var CryptoJS = require('crypto-js')
 
-const deleteFile = (filename: string) => {
-    fs.unlink(filename, (err) => {
-        if (err) {
-            console.error(err)
-            return
-        } else {
-            console.log('Success')
-        }
-    })
-}
-
-const saveFile = async (filename, content) => {
-    await fsPromises.writeFile(`./public/images/${filename}`, content)
-}
-
+// delete plant
 export const DELETE = async (
     request: NextRequest,
     { params }: { params: { userid: string; plantId: string } }
 ) => {
     try {
-        // console.log(params);
-        //const arr = CryptoJS.enc.Hex.parse(params.userid)
-        //const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const plant = await prisma.plant.findUnique({
             where: {
                 plantId: Number(params.plantId),
@@ -39,6 +22,7 @@ export const DELETE = async (
             },
         })
 
+        // delete custom plant image
         if (plant?.speciesImage == false) {
             deleteFile(`./public/images/${plant?.customImage}`)
         }
@@ -56,17 +40,17 @@ export const DELETE = async (
     }
 }
 
+// update plant
 export const PUT = async (
     request: NextRequest,
     { params }: { params: { userid: string; plantId: string } }
 ) => {
     try {
-        // console.log(params);
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const { nickname, description, image, species } = await request.json()
         let image_name = `plant-${email}${Date.now()}.txt`
+        // get old plant data
         const plant = await prisma.plant.findUnique({
             where: {
                 plantId: Number(params.plantId),
@@ -78,6 +62,7 @@ export const PUT = async (
             },
         })
 
+        // get specified species data
         const spc = await prisma.species.findUnique({
             where: {
                 speciesId: species,
@@ -89,16 +74,14 @@ export const PUT = async (
             },
         })
 
-        // console.log(image)
-
+        // if plant species changed and no new image was provided, use species image
         if (plant?.speciesId != species) {
             if (image == '') {
                 image_name = spc?.speciesImage as string
-                // console.log('delete old image')
-                // deleteFile(`./public/images/${plant?.customImage}`)
             }
         }
 
+        // update plant
         const updated = await prisma.plant.update({
             where: {
                 plantId: Number(params.plantId),
@@ -114,6 +97,8 @@ export const PUT = async (
                 speciesId: plant?.speciesId != species ? species : undefined,
             },
         })
+
+        // save custom image if provided and delete old one
         if (image != '') {
             if (plant?.speciesImage == false) {
                 //is custom image
@@ -131,6 +116,7 @@ export const PUT = async (
             deleteFile(`./public/images/${plant?.customImage}`)
         }
 
+        // update watering if species changed
         if (plant?.speciesId != species) {
             const del = await prisma.watering.deleteMany({
                 where: {

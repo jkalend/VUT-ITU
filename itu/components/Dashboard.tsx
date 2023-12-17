@@ -1,7 +1,6 @@
 'use client'
 import DItem from './DItem'
 import { useState, useEffect } from 'react'
-// import { getSettings, Settings } from "@/app/Settings";
 import { PlantData } from '@/app/PlantData'
 import CryptoJS from 'crypto-js'
 import { useSession } from 'next-auth/react'
@@ -19,16 +18,44 @@ export default function Dashboard({
 }) {
     const { data: session, status } = useSession()
     const [filteredData, setFilteredData] = useState([] as PlantData[])
-    const [whichPlant, setWhichPlant] = useState(-1 as PlantData)
-    // useEffect(() => {
-    //     if (whichPlant != -1) {
-    //         data[data.indexOf(whichPlant)].days = Number(
-    //             data[data.indexOf(whichPlant)].watering_frequency
-    //         )
-    //         filteredData.splice(filteredData.indexOf(whichPlant), 1)
-    //         setWhichPlant(-1)
-    //     }
-    // })
+    const [whichPlant, setWhichPlant] = useState(-1)
+    useEffect(() => {
+        const watering = async () => {
+            if (whichPlant != -1) {
+                const a = CryptoJS.enc.Hex.stringify(
+                    CryptoJS.enc.Utf8.parse(session?.user?.email as string)
+                )
+
+                console.log(whichPlant)
+
+                const res = await fetch(
+                    `/api/profile/${a}/plants/${whichPlant.plantId}/watering`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            amount: whichPlant.watering_frequency,
+                        }),
+                    }
+                )
+
+                if (res.status === 200) {
+                    data[data.indexOf(whichPlant)].days = Number(
+                        data[data.indexOf(whichPlant)].watering_frequency
+                    )
+                    filteredData.splice(filteredData.indexOf(whichPlant), 1)
+                    setWhichPlant(-1)
+                } else {
+                    console.log('Error: watering failed')
+                    setWhichPlant(-1)
+                }
+            }
+        }
+
+        if (whichPlant != -1) {
+            watering().then((r) => {})
+        }
+    })
 
     const [stg, setStg] = useState(3)
     useEffect(() => {

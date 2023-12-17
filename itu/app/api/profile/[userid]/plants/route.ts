@@ -1,22 +1,18 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 import { NextRequest, NextResponse } from 'next/server'
 import CryptoJS from 'crypto-js'
 import prisma from '@prisma'
-import fsPromises from 'fs/promises'
+import { readFromFile } from '@/app/api/social/route'
 
-const readFromFile = async (filename) => {
-    const base64 = await fsPromises.readFile(`./public/images/${filename}`)
-    return base64
-}
-
+// get plant data for my plants page, more data than overview
 export const GET = async (
     request: NextRequest,
     { params }: { params: { userid: string } }
 ) => {
     try {
-        // console.log(params);
         const arr = CryptoJS.enc.Hex.parse(params.userid)
         const email = CryptoJS.enc.Utf8.stringify(arr)
-        // console.log(email);
         const plants = await prisma.plant.findMany({
             where: {
                 email: email,
