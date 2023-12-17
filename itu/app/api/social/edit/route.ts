@@ -1,3 +1,9 @@
+// @ts-nocheck
+/**
+ * author: Tereza Kubincova (xkubin27)
+ */
+
+
 // POST - create new post
 import prisma from '@/app/db'
 import {NextRequest, NextResponse} from "next/server"

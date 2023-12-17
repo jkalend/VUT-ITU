@@ -1,5 +1,10 @@
-import { PlantData } from '@/app/PlantData'
-import Image from 'next/image'
+// @ts-nocheck
+/**
+ * author: Tereza Kubincova (xkubin27)
+ */
+
+import { PlantData } from "@/app/PlantData";
+import Image from "next/image";
 
 export default function DItem({
     plant,

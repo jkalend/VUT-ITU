@@ -1,3 +1,9 @@
+// @ts-nocheck
+/**
+ * author: Tereza Kubincova (xkubin27)
+ */
+
+
 'use client';
 
 import { SessionProvider } from "next-auth/react";

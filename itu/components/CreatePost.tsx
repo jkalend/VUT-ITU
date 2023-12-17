@@ -1,3 +1,8 @@
+// @ts-nocheck
+/**
+ * author: Tereza Kubincova (xkubin27)
+ */
+
 "use client"
 import Image from "next/image";
 import {useState, useEffect} from "react";
