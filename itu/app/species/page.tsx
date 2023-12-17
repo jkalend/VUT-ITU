@@ -1,31 +1,29 @@
 // @ts-nocheck
+// Author: Jan Kalenda
 'use client'
-import { useRouter, useParams, redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import AddSpecies from '@components/AddSpecies'
-import CryptoJS from 'crypto-js'
 
 const PlantsPage = () => {
-    const params = useParams()
     const router = useRouter()
     const { data: session, status } = useSession()
     const [plants, setPlants] = useState([])
-    const [error, setError] = useState(false)
     const [isClicked, setClicked] = useState(true)
-
-    const getSpecies = async () => {
-        const res = await fetch(`/api/species`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        return await res.json()
-    }
 
     useEffect(() => {
         if (status === 'authenticated') {
+            // get species from database
+            const getSpecies = async () => {
+                const res = await fetch(`/api/species`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+
+                return await res.json()
+            }
+
             getSpecies().then((r) => {
                 setPlants(r)
             })
@@ -70,39 +68,31 @@ const PlantsPage = () => {
                             'flex flex-col rounded-2xl bg-gray-900 p-2 gap-2 w-full'
                         }
                     >
-                        {error ? (
-                            <div className={'text-red-500'}>
-                                Error loading plants
-                            </div>
-                        ) : (
-                            plants.map(
-                                (plant: any) => (
-                                    <button
-                                        key={plant.plantId}
-                                        onClick={() => {}}
-                                        className={
-                                            'flex flex-row justify-between p-5 rounded-2xl bg-gray-700 py-3'
-                                        }
-                                    >
-                                        <div className={'flex flex-col gap-1'}>
+                        {plants.map(
+                            (plant: any) => (
+                                <button
+                                    key={plant.plantId}
+                                    onClick={() => {}}
+                                    className={
+                                        'flex flex-row justify-between p-5 rounded-2xl bg-gray-700 py-3'
+                                    }
+                                >
+                                    <div className={'flex flex-col gap-1'}>
+                                        <div
+                                            className={
+                                                'flex flex-row gap-5 justify-start items-center'
+                                            }
+                                        >
                                             <div
-                                                className={
-                                                    'flex flex-row gap-5 justify-start items-center'
-                                                }
+                                                className={'font-bold text-xl'}
                                             >
-                                                <div
-                                                    className={
-                                                        'font-bold text-xl'
-                                                    }
-                                                >
-                                                    {plant.name}
-                                                </div>
+                                                {plant.name}
                                             </div>
                                         </div>
-                                    </button>
-                                ),
-                                []
-                            )
+                                    </div>
+                                </button>
+                            ),
+                            []
                         )}
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 'use client'
 import { useState } from 'react'
 import Navbar from '@components/Navbar'
@@ -9,6 +11,7 @@ export default function Sidebar() {
     const { data: session } = useSession()
     const [isSidebarOpen, setSidebarOpen] = useState(true)
     const [isClicked, setClicked] = useState(true)
+    //enables animation of the sidebar
     const sidebarStyle = {
         width: isSidebarOpen ? '16rem' : '0px', // You can adjust the width value as needed
         transition: 'width 0.3s, transform 0.3s', // Adjust the transition duration as needed

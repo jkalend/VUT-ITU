@@ -1,3 +1,5 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 'use client'
 
 import OpenAI from 'openai'
@@ -40,6 +42,7 @@ const ChatAi = () => {
         scrollToBottom()
     }, [messages])
 
+    // used to resize the window
     useEffect(() => {
         window.addEventListener('mousemove', (e) => {
             if (isResizedHeight.current) {
@@ -74,6 +77,7 @@ const ChatAi = () => {
         })
     }, [])
 
+    // used to get the thread id from backend
     useEffect(() => {
         if (status === 'authenticated') {
             const getAI = async () => {
@@ -116,6 +120,7 @@ const ChatAi = () => {
         }
     }, [status])
 
+    // create a new thread
     const createThread = async () => {
         if (openai === null) {
             return
@@ -135,6 +140,7 @@ const ChatAi = () => {
         return thread.id
     }
 
+    // delete the thread
     const handleDelete = async () => {
         const a = CryptoJS.enc.Hex.stringify(
             CryptoJS.enc.Utf8.parse(session?.user?.email as string)
@@ -150,6 +156,7 @@ const ChatAi = () => {
         setThread('')
     }
 
+    // chat with the AI
     const chatCompletion = async (mes: string) => {
         if (openai === null) {
             return
@@ -179,9 +186,7 @@ const ChatAi = () => {
             const res = await openai.beta.threads.runs.retrieve(th, run.id)
             if (res.status === 'completed') {
                 const text = await openai.beta.threads.messages.list(th)
-                // @ts-ignore
                 console.log(text.data[0].content[0].text.value)
-                // @ts-ignore
                 clearInterval(int)
                 messages.pop()
                 messages.push({
@@ -191,7 +196,6 @@ const ChatAi = () => {
                 })
                 setMessages([...messages])
             }
-            // console.log(res.status);
         }, 150)
     }
 

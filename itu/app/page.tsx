@@ -1,9 +1,9 @@
+// @ts-nocheck
 'use client'
 import Dashboard from '@components/Dashboard'
 import { useState, useEffect } from 'react'
-import { Plant, PlantData, getPlantData } from './PlantData'
+import { PlantData } from './PlantData'
 import { useSession } from 'next-auth/react'
-// @ts-ignore
 var CryptoJS = require('crypto-js')
 
 export default function Home() {
@@ -12,27 +12,24 @@ export default function Home() {
     const [isClicked, setClicked] = useState(true)
     const [plantData, setPlantData] = useState([] as PlantData[])
 
-    // const getAppData = async () => {
-    //     let appData = await getPlantData();
-    //     setPlantData(appData);
-    // };
-
-    const test = async () => {
-        const a = CryptoJS.enc.Hex.stringify(
-            CryptoJS.enc.Utf8.parse(session?.user?.email as string)
-        )
-
-        const res = await fetch(`/api/profile/${a}/overview`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        return await res.json()
-    }
-
+    // author: Jan Kalenda
     useEffect(() => {
         if (status === 'authenticated') {
-            test().then((r) => {
+            // get plant overview
+            const getPlants = async () => {
+                const a = CryptoJS.enc.Hex.stringify(
+                    CryptoJS.enc.Utf8.parse(session?.user?.email as string)
+                )
+
+                const res = await fetch(`/api/profile/${a}/overview`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+
+                return await res.json()
+            }
+
+            getPlants().then((r) => {
                 const plants: PlantData[] = []
                 if (r.length === 0) {
                     setPlantData([])
