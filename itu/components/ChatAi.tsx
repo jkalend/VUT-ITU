@@ -88,24 +88,22 @@ const ChatAi = () => {
 
                 const data = await res.json()
 
-                let cipher = CryptoJS.lib.CipherParams.create({
-                    ciphertext: CryptoJS.enc.Base64.parse(data.key.ciphertext),
-                    iv: CryptoJS.enc.Hex.parse(data.key.iv),
-                    salt: CryptoJS.enc.Hex.parse(data.key.salt),
-                })
+                // to be used to get the api key from backend
 
-                const apiKey = CryptoJS.AES.decrypt(
-                    cipher,
-                    'ITUISSOOOSUPERDUPER'
-                ).toString(CryptoJS.enc.Utf8)
-
-                // console.log(apiKey);
-                // console.log(data.thread);
-
+                // let cipher = CryptoJS.lib.CipherParams.create({
+                //     ciphertext: CryptoJS.enc.Base64.parse(data.key.ciphertext),
+                //     iv: CryptoJS.enc.Hex.parse(data.key.iv),
+                //     salt: CryptoJS.enc.Hex.parse(data.key.salt),
+                // })
+                //
+                // const apiKey = CryptoJS.AES.decrypt(
+                //     cipher,
+                //     'ITUISSOOOSUPERDUPER'
+                // ).toString(CryptoJS.enc.Utf8)
                 // openai = new OpenAI({apiKey: apiKey, dangerouslyAllowBrowser: true});
                 // setThread(data.thread);
 
-                return { apiKey: apiKey, thread: data.thread }
+                return { thread: data.thread }
             }
 
             getAI().then((r) => {
