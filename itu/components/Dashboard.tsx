@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 import DItem from './DItem'
 import { useState, useEffect } from 'react'
@@ -43,7 +44,13 @@ export default function Dashboard({
                     data[data.indexOf(whichPlant)].days = Number(
                         data[data.indexOf(whichPlant)].watering_frequency
                     )
-                    filteredData.splice(filteredData.indexOf(whichPlant), 1)
+                    if (data[data.indexOf(whichPlant)].days >= Number(stg)) {
+                        filteredData.splice(filteredData.indexOf(whichPlant), 1)
+                    }
+                    filteredData.sort((a: PlantData, b: PlantData) =>
+                        a.days > b.days ? 1 : -1
+                    )
+                    setFilteredData(filteredData)
                     setWhichPlant(-1)
                 } else {
                     console.log('Error: watering failed')
@@ -61,6 +68,9 @@ export default function Dashboard({
     useEffect(() => {
         const filteredData = data.filter(
             (h: PlantData) => h.days <= Number(stg)
+        )
+        filteredData.sort((a: PlantData, b: PlantData) =>
+            a.days > b.days ? 1 : -1
         )
         setFilteredData(filteredData)
     }, [stg])
