@@ -118,7 +118,7 @@ export default function Post( {post, setPosts} ) {
                     <div className="flex flex-col w-full justify-center items-center">
                         {!isEditing ? (
                             <>
-                                <div className="w-[164.90px]  text-slate-600 text-center text-sm font-semi}">
+                                <div className="w-[164.90px]  text-slate-600 text-left text-sm font-semi}">
                                     {newDescr}
                                 </div>
                             </>

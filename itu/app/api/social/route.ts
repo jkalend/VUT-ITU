@@ -62,9 +62,11 @@ export const DELETE = async (request: NextRequest) => {
                 postId:postId
             }
         })
+        console.log("post delted", post_deleted)
         deleteFile(`./public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
+        console.log(error)
         return new Response("Failed to create post " + error, { status: 500 })
     }
 } 

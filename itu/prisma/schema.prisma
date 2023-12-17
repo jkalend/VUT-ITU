@@ -28,7 +28,7 @@ model Comment {
   email       String
   postId      Int
   author      User     @relation("UserComment", fields: [email], references: [email])
-  on          Post     @relation("PostComment", fields: [postId], references: [postId])
+  on          Post     @relation("PostComment", fields: [postId], references: [postId], onDelete: Cascade)
 }
 
 model Post {
