@@ -53,7 +53,6 @@ export default function Home() {
                         watering_amount: plant.species.wateringAmount,
                     })
                 })
-                console.log(plants)
                 setPlantData(plants)
             })
         }
@@ -73,35 +72,35 @@ export default function Home() {
             //     {/*    setClicked={setClicked}*/}
             //     {/*    name={name}*/}
             //     {/*/>*/}
-                
-                    <div className={'main-div'}>
-                        <div className="flex flex-col relative h-full py-15 px-15 gap-10">
-                        <Dashboard
-                            isClicked={isClicked}
-                            setClicked={setClicked}
-                            setName={setName}
-                            data={plantData}
-                        ></Dashboard>
-                        </div>
-                        {/*<div*/}
-                        {/*    className={*/}
-                        {/*        "flex w-1/2 justify-between text-orange-200 text-lg font-semibold"*/}
-                        {/*    }*/}
-                        {/*>*/}
-                        {/*    <div>*/}
-                        {/*        <a href="#">Home</a>*/}
-                        {/*    </div>*/}
-                        {/*    <div>*/}
-                        {/*        <a href="#">Contact</a>*/}
-                        {/*    </div>*/}
-                        {/*    <div>*/}
-                        {/*        <a href="#">Services</a>*/}
-                        {/*    </div>*/}
-                        {/*    <div>*/}
-                        {/*        <button onClick={() => setClicked(!isClicked)}>About</button>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                    </div>
-         //   </div>
+
+            <div className={'main-div'}>
+                <div className="flex flex-col relative h-full py-15 px-15 gap-10">
+                    <Dashboard
+                        isClicked={isClicked}
+                        setClicked={setClicked}
+                        setName={setName}
+                        data={plantData}
+                    ></Dashboard>
+                </div>
+                {/*<div*/}
+                {/*    className={*/}
+                {/*        "flex w-1/2 justify-between text-orange-200 text-lg font-semibold"*/}
+                {/*    }*/}
+                {/*>*/}
+                {/*    <div>*/}
+                {/*        <a href="#">Home</a>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <a href="#">Contact</a>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <a href="#">Services</a>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <button onClick={() => setClicked(!isClicked)}>About</button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+            </div>
+            //   </div>
         )
 }
