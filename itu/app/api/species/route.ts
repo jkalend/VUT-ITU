@@ -2,7 +2,7 @@
 // Author: Jan Kalenda
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { saveFile } from '@/app/api/social/route'
+//import { saveFile } from '@/app/api/social/route'
 
 // get species data
 export const GET = async (request: NextRequest) => {
@@ -13,6 +13,7 @@ export const GET = async (request: NextRequest) => {
                 name: true,
             },
         })
+        
         return NextResponse.json(species, { status: 200 })
     } catch (error) {
         console.log(error)
@@ -23,20 +24,20 @@ export const GET = async (request: NextRequest) => {
 // add new species
 export const POST = async (request: NextRequest) => {
     try {
-        return NextResponse.json('not added', { status: 403 })
+        //return NextResponse.json('not added', { status: 403 })
 
         const { name, period, amount, image } = await request.json()
-        const image_name = `${name}.txt`
+       // const image_name = `${name}.txt`
         const species = await prisma.species.create({
             data: {
                 name: name,
                 wateringPeriod: period,
                 wateringAmount: amount,
-                speciesImage: image_name,
+                speciesImage: Buffer.from(image, "utf8"),
             },
         })
-        saveFile(species.speciesImage, image)
-        species.speciesImage = image
+        //saveFile(species.speciesImage, image)
+        //species.speciesImage = image
         return NextResponse.json(species, { status: 200 })
     } catch (error) {
         console.log(error)

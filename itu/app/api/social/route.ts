@@ -6,34 +6,6 @@
 // POST - create new post
 import prisma from '@/app/db'
 import { NextRequest, NextResponse } from 'next/server'
-import fsPromises from 'fs/promises'
-import fs from 'fs'
-
-export const saveFile = async (filename: any, content: any) => {
-    await fsPromises.writeFile(`./public/images/${filename}`, content)
-}
-
-export const readFromFile = async (filename: any) => {
-    const env = process.env.NODE_ENV
-    if (env == 'development') {
-        const base64 = await fsPromises.readFile(`public/images/${filename}`)
-        return base64
-    } else if (env == 'production') {
-        //const base64 = await fsPromises.readFile(`/images/${filename}`)
-        const base64 = await fsPromises.readFile(`/images/${filename}`)
-        return base64
-    }
-}
-export const deleteFile = async (filename: any) => {
-    await fs.unlink(filename, (err) => {
-        if (err) {
-            console.error(err)
-            return
-        } else {
-            console.log('Success')
-        }
-    })
-}
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -42,13 +14,11 @@ export const POST = async (request: NextRequest) => {
         const post = await prisma.post.create({
             data: {
                 email: email,
-                image: image_name,
-                byteImage: Buffer.from(image, "utf8"),
+                image: Buffer.from(image, "utf8"),
                 description: desc,
             },
         })
-        //saveFile(post.image, image)
-       // post.image = image
+
         return new Response(JSON.stringify(post), { status: 200 })
     } catch (error) {
         console.log(error)
@@ -75,14 +45,6 @@ export const DELETE = async (request: NextRequest) => {
             },
         })
         console.log('post delted', post_deleted)
-        // const env = process.env.NODE_ENV
-        // if (env == 'development') {
-        //     deleteFile(`public/images/${post.image}`)
-        // } else if (env == 'production') {
-        //     deleteFile(`/images/${post.image}`)
-        // }
-
-        //deleteFile(`public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
         console.log(error)
@@ -105,9 +67,7 @@ export const GET = async (request: NextRequest) => {
             },
         })
         for (let i = 0; i < posts.length; i++) {
-            // const file_name = posts[i].image
-            // const content = await readFromFile(file_name)
-            posts[i].image = posts[i].byteImage.toString("utf8")
+            posts[i].image = posts[i].image.toString("utf8")
         }
         console.log(posts.length)
         return new Response(JSON.stringify(posts), { status: 200 })

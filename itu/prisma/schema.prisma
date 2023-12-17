@@ -34,8 +34,7 @@ model Comment {
 model Post {
   postId      Int       @id @default(autoincrement())
   dateCreated DateTime  @default(now())
-  image       String
-  byteImage   Bytes?
+  image       Bytes
   email       String
   description String
   creator     User      @relation("UserPost", fields: [email], references: [email])
@@ -57,7 +56,7 @@ model Species {
   name           String
   wateringPeriod Int
   wateringAmount Int
-  speciesImage   String
+  speciesImage   Bytes
   plants         Plant[] @relation("PlantSpecies")
 }
 
