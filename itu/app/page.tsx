@@ -1,6 +1,5 @@
 'use client'
 import Dashboard from '@components/Dashboard'
-import DetailsOverlay from '@components/DetailsOverlay'
 import { useState, useEffect } from 'react'
 import { Plant, PlantData, getPlantData } from './PlantData'
 import { useSession } from 'next-auth/react'

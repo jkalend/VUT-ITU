@@ -10,7 +10,6 @@ import DetailsOverlay from '@components/DetailsOverlay'
 import { PlantData } from '@/app/PlantData'
 
 const PlantsPage = () => {
-    const params = useParams()
     const router = useRouter()
     const { data: session, status } = useSession()
     const [plants, setPlants] = useState([] as PlantData[])
