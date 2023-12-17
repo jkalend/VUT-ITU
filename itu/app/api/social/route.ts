@@ -20,6 +20,9 @@ export const readFromFile = async (filename: any) => {
         return base64
     } else if (env == 'production') {
         //const base64 = await fsPromises.readFile(`/images/${filename}`)
+        const abc = await fsPromises.writeFile(`images.txt`, 'Hello World')
+        const d = await fsPromises.realpath('images.txt')
+        console.log(d)
         const base64 = await fsPromises.readFile(`test.txt`)
         return base64
     }
