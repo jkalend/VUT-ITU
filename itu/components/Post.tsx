@@ -21,7 +21,6 @@ export default function Post( {post, setPosts} ) {
 
   useEffect(() => {
     setAllComments(post.comments)
-    console.log(allComments)
   }, []);
 
   const deleteComment = async (event: React.FormEvent<HTMLFormElement>) => {

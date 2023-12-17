@@ -10,7 +10,6 @@ import { useSession } from 'next-auth/react'
 import prisma from '@/app/db'
 import Post from '@components/Post'
 import CreatePost from "@components/CreatePost";
-import { CldImage } from 'next-cloudinary';
 
 
 const Social = () => {
@@ -26,7 +25,6 @@ const Social = () => {
                 method: "GET"}
                 );
         const data = await response.json();
-        console.log(data)
         setPosts(data.sort((a,b) => {return (a.dateCreated < b.dateCreated)? 1: -1}));
       }
       catch (err) {
