@@ -169,10 +169,15 @@ const ChatAi = () => {
             assistant_id: ID,
         })
 
+        messages.push({
+            role: 'ai',
+            content: "Thinking... I'll get back to you soon!",
+            id: messages.length,
+        })
+
+        setMessages([...messages])
+
         const int = setInterval(async () => {
-            if (openai === null) {
-                return
-            }
             const res = await openai.beta.threads.runs.retrieve(th, run.id)
             if (res.status === 'completed') {
                 const text = await openai.beta.threads.messages.list(th)
@@ -180,6 +185,7 @@ const ChatAi = () => {
                 console.log(text.data[0].content[0].text.value)
                 // @ts-ignore
                 clearInterval(int)
+                messages.pop()
                 messages.push({
                     role: 'ai',
                     content: text.data[0].content[0].text.value,
@@ -188,7 +194,7 @@ const ChatAi = () => {
                 setMessages([...messages])
             }
             // console.log(res.status);
-        }, 2000)
+        }, 150)
     }
 
     const handleClick = async () => {
