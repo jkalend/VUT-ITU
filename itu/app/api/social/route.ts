@@ -11,12 +11,31 @@ import fsPromises from 'fs/promises'
 import fs from 'fs'
 
 export const saveFile = async (filename: any, content: any) => {
-    await fsPromises.writeFile(`./public/images/${filename}`, content)
+    const env = process.env.NODE_ENV
+    if(env == "development"){
+    // do something
+        await fsPromises.writeFile(`public/images/${filename}`, content)
+    }
+    else if (env == "production"){
+    // do something
+        await fsPromises.writeFile(`images/${filename}`, content)
+    }
+    
 }
 
 export const readFromFile = async (filename: any) => {
-    const base64 = await fsPromises.readFile(`./public/images/${filename}`)
-    return base64
+    const env = process.env.NODE_ENV
+    if(env == "development"){
+    // do something
+        const base64 = await fsPromises.readFile(`public/images/${filename}`)
+        return base64
+    }
+    else if (env == "production"){
+    // do something
+        const base64 = await fsPromises.readFile(`images/${filename}`)
+        return base64
+    }
+    
 }
 export const deleteFile = async (filename: any) => {
     await fs.unlink(filename, (err) => {
@@ -68,7 +87,15 @@ export const DELETE = async (request: NextRequest) => {
             },
         })
         console.log('post delted', post_deleted)
-        deleteFile(`./public/images/${post.image}`)
+        const env = process.env.NODE_ENV
+        if(env == "development"){
+            deleteFile(`public/images/${post.image}`)
+        }
+        else if (env == "production"){
+            deleteFile(`images/${post.image}`)
+        }
+            
+        //deleteFile(`public/images/${post.image}`)
         return new Response(JSON.stringify(post_deleted), { status: 200 })
     } catch (error) {
         console.log(error)
