@@ -1,4 +1,5 @@
 // @ts-nocheck
+//
 'use client'
 import { useRouter, useParams, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -37,6 +38,10 @@ const PlantsPage = () => {
         if (status === 'authenticated' && change) {
             getPlants().then((r) => {
                 const plants: PlantData[] = []
+                if (r.length === 0) {
+                    setPlants([])
+                    return
+                }
                 r.map((plant: any) => {
                     plants.push({
                         nickname: plant.nickname,

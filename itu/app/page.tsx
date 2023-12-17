@@ -34,6 +34,10 @@ export default function Home() {
         if (status === 'authenticated') {
             test().then((r) => {
                 const plants: PlantData[] = []
+                if (r.length === 0) {
+                    setPlantData([])
+                    return
+                }
                 r.map((plant: any) => {
                     plants.push({
                         nickname: plant.nickname,
