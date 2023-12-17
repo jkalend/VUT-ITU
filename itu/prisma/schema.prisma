@@ -98,7 +98,7 @@ model Message {
   email       String
   groupId     Int
   author      User      @relation("UserMessage", fields: [email], references: [email])
-  group       ChatGroup @relation("MessageChatGroup", fields: [groupId], references: [groupId])
+  group       ChatGroup @relation("MessageChatGroup", fields: [groupId], references: [groupId], onDelete: Cascade)
 }
 
 model UserChatGroup {
