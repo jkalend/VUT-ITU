@@ -1,7 +1,7 @@
 // @ts-nocheck
-//
+// Author: Jan Kalenda
 'use client'
-import { useRouter, useParams, redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import AddPlant from '@components/AddPlant'
@@ -14,28 +14,28 @@ const PlantsPage = () => {
     const router = useRouter()
     const { data: session, status } = useSession()
     const [plants, setPlants] = useState([] as PlantData[])
-    const [error, setError] = useState(false)
     const [isClicked, setClicked] = useState(true)
     const [detailClicked, setDetailClicked] = useState(true)
     const [clickedPlant, setClickedPlant] = useState({} as PlantData)
     const [change, setChange] = useState(true)
     const [search, setSearch] = useState('')
 
-    const getPlants = async () => {
-        const a = CryptoJS.enc.Hex.stringify(
-            CryptoJS.enc.Utf8.parse(session?.user?.email as string)
-        )
-
-        const res = await fetch(`/api/profile/${a}/plants`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        return await res.json()
-    }
-
     useEffect(() => {
         if (status === 'authenticated' && change) {
+            // fetch plants from database
+            const getPlants = async () => {
+                const a = CryptoJS.enc.Hex.stringify(
+                    CryptoJS.enc.Utf8.parse(session?.user?.email as string)
+                )
+
+                const res = await fetch(`/api/profile/${a}/plants`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+
+                return await res.json()
+            }
+
             getPlants().then((r) => {
                 const plants: PlantData[] = []
                 if (r.length === 0) {
@@ -74,6 +74,7 @@ const PlantsPage = () => {
         }
     }, [status, change])
 
+    // handle search input
     const handleSearch = (event: any) => {
         const timer = setTimeout(() => {
             setChange(true)
@@ -140,12 +141,7 @@ const PlantsPage = () => {
                             'flex flex-col rounded-2xl bg-transparent p-2 gap-2 w-full'
                         }
                     >
-                        {error ? (
-                            <div className={'text-red-500'}>
-                                Error loading plants
-                            </div>
-                        ) : (
-                            plants &&
+                        {plants &&
                             plants.map(
                                 (plant: PlantData) => (
                                     <button
@@ -229,8 +225,7 @@ const PlantsPage = () => {
                                     </button>
                                 ),
                                 []
-                            )
-                        )}
+                            )}
                     </div>
                 </div>
             </main>

@@ -1,12 +1,20 @@
-[//]: # (This is a [Next.js]&#40;https://nextjs.org/&#41; project bootstrapped with [`create-next-app`]&#40;https://github.com/vercel/next.js/tree/canary/packages/create-next-app&#41;.)
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
 
 ```bash
 npm install
 ```
+    
+Then, generate prisma client:
+
+```bash
+npx prisma generate
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev

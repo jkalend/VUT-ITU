@@ -1,14 +1,10 @@
+// @ts-nocheck
+// Author: Jan Kalenda
 'use client'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import CryptoJS from 'crypto-js'
-
-export type PlantData = {
-    nickname: string
-    description: string
-    species: string
-}
 
 export default function AddPlant({
     isClicked,
@@ -26,7 +22,6 @@ export default function AddPlant({
     const [createObjectURL, setCreateObjectURL] = useState('')
 
     const uploadToClient = (event: React.FormEvent<HTMLFormElement>) => {
-        // event.preventDefault()
         if (event.target.files && event.target.files[0]) {
             const i = event.target.files[0]
 
@@ -38,6 +33,7 @@ export default function AddPlant({
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
+        // encode email to hex
         const a = CryptoJS.enc.Hex.stringify(
             CryptoJS.enc.Utf8.parse(session?.user?.email as string)
         )
@@ -45,12 +41,7 @@ export default function AddPlant({
         const fileReader = new FileReader()
         const formData = new FormData(event.currentTarget)
 
-        // console.log(formData.get('myImage'))
-        // console.log(formData.get('nickname'))
-        // console.log(formData.get('description'))
-        // console.log(formData.get('species'))
-
-        // @ts-ignore
+        // if image is selected
         if (formData.get('myImage').name != '') {
             fileReader.readAsDataURL(image)
 
@@ -77,6 +68,7 @@ export default function AddPlant({
                 }
             }
         } else {
+            // if image is not selected
             const res = await fetch(`/api/profile/${a}/newPlant`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -98,23 +90,24 @@ export default function AddPlant({
     }
 
     const handleChange = (event: any) => {
-        // setData({...data, [event.target.name]: event.target.value});
-    }
-
-    const getSpecies = async () => {
-        const res = await fetch(`/api/species`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        if (!res.ok) {
-            console.log('Error')
-        }
-        const data = await res.json()
-        return data
+        // dummy handler
     }
 
     useEffect(() => {
         if (status === 'authenticated') {
+            // get species from database
+            const getSpecies = async () => {
+                const res = await fetch(`/api/species`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                if (!res.ok) {
+                    console.log('Error')
+                }
+                const data = await res.json()
+                return data
+            }
+
             getSpecies().then((r) => {
                 setSpecies(r)
             })
