@@ -63,28 +63,26 @@ export default function Home() {
 
     if (status === 'authenticated')
         return (
-            <div
-                className={
-                    'relative flex h-full max-w-full flex-1 flex-col overflow-hidden'
-                }
-            >
-                {/*<DetailsOverlay*/}
-                {/*    isClicked={isClicked}*/}
-                {/*    setClicked={setClicked}*/}
-                {/*    name={name}*/}
-                {/*/>*/}
-                <main
-                    className={
-                        'relative h-full w-full flex-1 overflow-auto transition-width'
-                    }
-                >
+            // <div
+            //     className={
+            //         'relative flex h-full max-w-full flex-1 flex-col overflow-hidden'
+            //     }
+            // >
+            //     {/*<DetailsOverlay*/}
+            //     {/*    isClicked={isClicked}*/}
+            //     {/*    setClicked={setClicked}*/}
+            //     {/*    name={name}*/}
+            //     {/*/>*/}
+                
                     <div className={'main-div'}>
+                        <div className="flex flex-col relative h-full py-15 px-15 gap-10">
                         <Dashboard
                             isClicked={isClicked}
                             setClicked={setClicked}
                             setName={setName}
                             data={plantData}
                         ></Dashboard>
+                        </div>
                         {/*<div*/}
                         {/*    className={*/}
                         {/*        "flex w-1/2 justify-between text-orange-200 text-lg font-semibold"*/}
@@ -104,7 +102,6 @@ export default function Home() {
                         {/*    </div>*/}
                         {/*</div>*/}
                     </div>
-                </main>
-            </div>
+         //   </div>
         )
 }

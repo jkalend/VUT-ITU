@@ -106,7 +106,7 @@ export default function Dashboard({
     }, [refresh, status])
 
     return (
-        <div className={'flex flex-col py-15 px-15 gap-10'}>
+        <div className={'flex flex-col py-15 px-15 gap-10 justify-normal'}>
             <div className={'mx-16'}>
                 <h1 className={'text-orange-200 text-3xl font-semibold'}>
                     Overview
