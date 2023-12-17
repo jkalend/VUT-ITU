@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react'
 import prisma from '@/app/db'
 import Post from '@components/Post'
 import CreatePost from "@components/CreatePost";
+import { CldImage } from 'next-cloudinary';
 
 
 const Social = () => {

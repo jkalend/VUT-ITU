@@ -7,12 +7,29 @@
 import Image from "next/image";
 import {useState, useEffect} from "react";
 import { useSession } from "next-auth/react";
+import { CldUploadWidget } from 'next-cloudinary';
 
 export default function createPost({isClicked, setClicked,setNewPostFlag} : {isClicked: boolean, setClicked: any, setNewPostFlag: any}) {
     const { data: session } = useSession();
     const [description, setDescription] = useState("")
     const [image, setImage] = useState(null);
     const [createObjectURL, setCreateObjectURL] = useState(null);
+
+    const [info, updateInfo] = useState();
+    const [error, updateError] = useState();
+
+    function handleOnUpload(error, result, widget) {
+        if ( error ) {
+          updateError(error);
+          return;
+        }
+    
+        updateInfo(result?.info);
+    
+        widget.close({
+          quiet: true
+        });
+      }
 
     const uploadToClient = (event: React.FormEvent<HTMLFormElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -32,7 +49,7 @@ export default function createPost({isClicked, setClicked,setNewPostFlag} : {isC
         fileReader.readAsDataURL(image);
 
         setDescription("")
-        setImage(null)
+        
         setCreateObjectURL(null)
         setClicked(true)
         fileReader.onload = async () => {
