@@ -24,7 +24,7 @@ export const GET = async (request: NextRequest) => {
 // add new species
 export const POST = async (request: NextRequest) => {
     try {
-        //return NextResponse.json('not added', { status: 403 })
+        return NextResponse.json('not added', { status: 403 })
 
         const { name, period, amount, image } = await request.json()
        // const image_name = `${name}.txt`
@@ -36,8 +36,7 @@ export const POST = async (request: NextRequest) => {
                 speciesImage: Buffer.from(image, "utf8"),
             },
         })
-        //saveFile(species.speciesImage, image)
-        //species.speciesImage = image
+        
         return NextResponse.json(species, { status: 200 })
     } catch (error) {
         console.log(error)
