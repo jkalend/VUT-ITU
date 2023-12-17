@@ -26,6 +26,14 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
         }
     }
     
+    // transfer owner on enter key press
+    const handleKeyDown = async (event: any) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          await onSubmit(event);
+        }
+    };
+
     // handle email input
     const handleEmail = (event: any) => {
         setEmail(event.target.value);
@@ -47,6 +55,7 @@ export default function addChatter({isClicked, setClicked, group} : {isClicked: 
                         id="name"
                         value={email}
                         onChange={handleEmail}
+                        onKeyDown={handleKeyDown}
                         placeholder='Enter user email'
                         required
                         className='text-black block p-2.5 w-full rounded-lg'

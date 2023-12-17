@@ -27,6 +27,14 @@ export default function createGroup({isClicked, setClicked} : {isClicked: boolea
         }
     }
 
+    // create group on enter key press
+    const handleKeyDown = async (event: any) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          await onSubmit(event);
+        }
+    };
+
     // handle group name input
     const handleName = (event: any) => {
         setName(event.target.value);
@@ -48,6 +56,7 @@ export default function createGroup({isClicked, setClicked} : {isClicked: boolea
                         id="name"
                         value={name}
                         onChange={handleName}
+                        onKeyDown={handleKeyDown}
                         placeholder='Enter Group Name'
                         required
                         maxLength={45}

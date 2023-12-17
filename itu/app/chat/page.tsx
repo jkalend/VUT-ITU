@@ -64,8 +64,10 @@ const Groups = () => {
             }
         }, 10000);
 
+        fetchGroups();
+
         return () => clearInterval(interval);
-    }, [isClicked, status, session, group]);
+    }, [isClicked, status, session]);
 
     // handle group name input
     const handleGroupName = (event: any) => {
