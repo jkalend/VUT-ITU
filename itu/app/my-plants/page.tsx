@@ -19,6 +19,7 @@ const PlantsPage = () => {
     const [detailClicked, setDetailClicked] = useState(true)
     const [clickedPlant, setClickedPlant] = useState({} as PlantData)
     const [change, setChange] = useState(true)
+    const [search, setSearch] = useState('')
 
     const getPlants = async () => {
         const a = CryptoJS.enc.Hex.stringify(
@@ -55,14 +56,28 @@ const PlantsPage = () => {
                         watering_amount: plant.species.wateringAmount,
                     })
                 })
-                console.log(plants)
-                setPlants(plants)
+                const filteredPlants = plants.filter((plant: PlantData) => {
+                    return plant.nickname
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
+                })
+
+                setPlants(filteredPlants)
                 setChange(false)
             })
         } else if (status === 'unauthenticated') {
             router.push('/')
         }
     }, [status, change])
+
+    const handleSearch = (event: any) => {
+        const timer = setTimeout(() => {
+            setChange(true)
+            setSearch(event.target.value)
+
+            return () => clearTimeout(timer)
+        }, 200)
+    }
 
     if (status === 'loading')
         return (
@@ -96,8 +111,19 @@ const PlantsPage = () => {
                 }
             >
                 <div className={'main-div'}>
-                    <div className={'flex w-full flex-row p-5 justify-between'}>
+                    <div
+                        className={
+                            'flex w-full flex-row p-5 justify-between items-center'
+                        }
+                    >
                         <h1 className={'font-bold text-2xl'}>Plants</h1>
+                        <input
+                            className={
+                                'w-20 rounded-xl min-h-[40px] text-center p-1 text-black'
+                            }
+                            onChange={handleSearch}
+                            placeholder={'search'}
+                        />
                         <button
                             onClick={() => setClicked(!isClicked)}
                             className={'p-4 text-xl rounded-2xl bg-green-950'}

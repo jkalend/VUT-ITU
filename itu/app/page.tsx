@@ -59,8 +59,6 @@ export default function Home() {
         }
     }, [status])
 
-    useEffect(() => {})
-
     if (status === 'loading') return <div>Loading...</div>
 
     return (

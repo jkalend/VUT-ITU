@@ -42,6 +42,7 @@ export const POST = async (
                 speciesImage: true,
                 wateringAmount: true,
                 wateringPeriod: true,
+                name: true,
             },
         })
 
@@ -52,7 +53,7 @@ export const POST = async (
         const post = await prisma.plant.create({
             data: {
                 email: email,
-                nickname: nickname,
+                nickname: nickname ? nickname : res?.name,
                 description: description,
                 speciesId: species,
                 customImage: image ? image_name : res?.speciesImage,
